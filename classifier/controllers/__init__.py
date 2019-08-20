@@ -9,7 +9,7 @@ from werkzeug.exceptions import InternalServerError, ServiceUnavailable
 
 from arxiv import status
 
-from ..services import classifier
+from classifier.services import classifier
 
 
 def health_check() -> Tuple[str, int, Dict[str, Any]]:
