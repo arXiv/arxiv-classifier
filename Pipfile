@@ -1,0 +1,15 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+arxiv-auth = "==0.2.7"
+arxiv-base = "==0.15.8.post1"
+
+[dev-packages]
+pylint = "*"
+nose = "*"
+
+[requires]
+python_version = "3.7"
