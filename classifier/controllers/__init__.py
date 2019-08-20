@@ -5,7 +5,10 @@ Each controller function returns a 3-tuple of response data (``dict``),
 status code (``int``), and extra response headers (``dict``).
 """
 from typing import Tuple, Dict, Any
+from werkzeug.exceptions import InternalServerError, ServiceUnavailable
+
 from arxiv import status
+
 from ..services import classifier
 
 
@@ -25,8 +28,11 @@ def health_check() -> Tuple[str, int, Dict[str, Any]]:
     """
     try:
         classification = classifier.classify("Sample text") # attempt a classification task
-    except Exception:
-        return 'DOWN', status.HTTP_503_SERVICE_UNAVAILABLE, {}
-    if classification['results']:
+    except Exception as ex:
+        raise ServiceUnavailable('DOWN') from ex
+
+    if 'results' in classification and classification['results']:
         return 'OK', status.HTTP_200_OK, {}
-    return 'DOWN', status.HTTP_500_INTERNAL_SERVER_ERROR, {}
+
+    # Malformed response (i.e., missing 'results') and catch-all
+    raise InternalServerError('DOWN')
