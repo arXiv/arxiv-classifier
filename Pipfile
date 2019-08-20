@@ -4,8 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
-arxiv-auth = "==0.2.7"
-arxiv-base = "==0.15.8.post1"
+arxiv-auth = "==0.4.1"
+arxiv-base = "==0.16.1.post2"
 
 [dev-packages]
 pylint = "*"
