@@ -5,6 +5,7 @@ import json
 
 from flask import Blueprint, request, Response
 
+from arxiv import status
 from arxiv.base import logging
 from classifier.controllers import health_check
 
@@ -18,7 +19,9 @@ def classify() -> Union[str, Response]:
     doc = request.args.get('doc')
     # TODO: determine domain and reimplement
     data = json.dumps({'result': doc})
-    return data # type: ignore
+    code = status.HTTP_200_OK
+    headers = {}
+    return data, code, headers # type: ignore
 
 @blueprint.route('status', methods=['GET', 'HEAD'])
 def service_status() -> Union[str, Response]:
