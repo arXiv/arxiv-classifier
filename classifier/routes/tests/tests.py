@@ -1,5 +1,6 @@
 """Tests for :mod:`routes`."""
 
+import json
 from unittest import TestCase, mock
 
 from flask import Flask
@@ -28,13 +29,17 @@ class TestHealthCheck(APITest):
 
         response = self.client.get('/status')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, 'OK')
+        self.assertEqual(response.data, b'OK')
 
 
 class TestClassify(APITest):
-    @mock.patch('classifier.routes.request')
-    def test_classify_returns_result(self, mock_request):
+    @mock.patch('classifier.routes.classify_stream')
+    def test_classify_returns_result(self, mock_classify_stream):
         """Test returns 'OK' + status 200 when classify returns results."""
-        mock_request.args = {'doc': 'this is a test'}
+        mock_classify_stream.return_value = {'cs.DL': 0.375}
+        expected_data = b'{"cs.DL":0.375}\n'
 
-        self.assertEqual(classifier.routes.classify(), '{"result": "this is a test"}')
+        response = self.client.post('/classify', data=b"mockcontent")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, expected_data)
