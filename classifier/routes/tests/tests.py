@@ -50,3 +50,10 @@ class TestClassify(APITest):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, b'{"message":"Body empty or content-length not set"}\n')
+
+    def test_classify_too_large_fails(self):
+        """Test returns invalid length when content is empty."""
+        response = self.client.post('/classify', data=b"a"*20_000, headers={'Content-Type': "text/plain"})
+
+        self.assertEqual(response.status_code, status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+        self.assertIn('message', json.loads(response.data))
