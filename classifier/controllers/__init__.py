@@ -9,11 +9,11 @@ from werkzeug.exceptions import InternalServerError, ServiceUnavailable
 
 from arxiv import status
 
-from classifier.domain import Classification
+from classifier.domain import ClassificationResult
 from classifier.services import classifier
 
 
-def classify_stream(doc: IO[bytes]) -> Dict[Classification, float]:
+def classify_stream(doc: IO[bytes]) -> List[ClassificationResult]:
     """
     Classification of a document stream.
 
@@ -24,11 +24,11 @@ def classify_stream(doc: IO[bytes]) -> Dict[Classification, float]:
 
     Returns
     -------
-    dict
-        dictionary of { classification: probability } pairs.
+    list
+        List of :class:`ClassificationResult` objects.
 
     """
-    return {}
+    return []
 
 def health_check() -> Tuple[str, int, Dict[str, Any]]:
     """
