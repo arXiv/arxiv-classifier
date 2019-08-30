@@ -1,4 +1,4 @@
-"""arxiv classifier routes."""
+"""arXiv classifier routes."""
 from typing import IO, Union
 
 import io
@@ -16,6 +16,7 @@ from . import serialize
 logger = logging.getLogger(__name__)
 
 blueprint = Blueprint('classifier', __name__, url_prefix='/')
+
 
 @blueprint.route('classify', methods=['POST'])
 def classify() -> Union[str, Response]:

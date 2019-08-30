@@ -25,7 +25,7 @@ def classify_stream(doc: IO[bytes]) -> Dict[Classification, float]:
     Returns
     -------
     dict
-        dictionary of { classification: probability } pairs.
+        Dictionary of { classification: probability } pairs.
 
     """
     return {}
