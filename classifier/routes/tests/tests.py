@@ -35,7 +35,7 @@ class TestHealthCheck(APITest):
 class TestClassify(APITest):
     @mock.patch('classifier.routes.classify_stream')
     def test_classify_returns_result(self, mock_classify_stream):
-        """Test returns 'OK' + status 200 when classify returns results."""
+        """Test returns results + status 200 when classify is successful."""
         mock_classify_stream.return_value = {'cs.DL': 0.375}
         expected_data = b'{"cs.DL":0.375}\n'
 
@@ -43,3 +43,10 @@ class TestClassify(APITest):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, expected_data)
+
+    def test_classify_empty_fails(self):
+        """Test returns invalid length when content is empty."""
+        response = self.client.post('/classify', data=b"", headers={'Content-Type': "text/plain"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, b'{"message":"Body empty or content-length not set"}\n')

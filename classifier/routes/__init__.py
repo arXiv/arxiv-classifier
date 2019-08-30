@@ -4,8 +4,8 @@ from typing import IO
 import io
 import json
 
-from flask import Blueprint, current_app, make_response, request, Response
-from werkzeug.exceptions import BadRequest, RequestEntityTooLarge
+from flask import Blueprint, current_app, jsonify, make_response, request, Response
+from werkzeug.exceptions import HTTPException, BadRequest, RequestEntityTooLarge
 
 from arxiv import status
 from arxiv.base import logging
@@ -17,6 +17,13 @@ logger = logging.getLogger(__name__)
 
 blueprint = Blueprint('classifier', __name__, url_prefix='/')
 
+
+@blueprint.app_errorhandler(HTTPException)
+def handle_error(error) -> Response:
+    status_code = error.code
+    response = { 'message': error.description }
+
+    return make_response(jsonify(response), status_code)
 
 @blueprint.route('classify', methods=['POST'])
 def classify() -> Response:
