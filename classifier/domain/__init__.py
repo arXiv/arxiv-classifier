@@ -1,6 +1,10 @@
 """Classifier domain classes."""
 
-class Classification:
-    # TODO: Implement classification representation, 
-    # likely using same as search.domain.
-    pass
+from dataclasses import dataclass
+
+from arxiv.taxonomy import Category
+
+@dataclass
+class ClassificationResult:
+    category: Category
+    log_likelihood: float
