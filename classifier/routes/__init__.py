@@ -42,7 +42,7 @@ def classify() -> Response:
         stream = request.stream
 
     # Classify the stream and cast data to JSON    
-    results = classify_stream(request.stream)
+    results = classify_stream(stream)
     response = serialize.as_json(results)
 
     return response
