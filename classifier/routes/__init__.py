@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 """arXiv classifier routes."""
 from typing import IO, Union
+=======
+"""arxiv classifier routes."""
+from typing import IO
+>>>>>>> 2affd21... fixing types
 
 import io
 import json
@@ -19,7 +24,7 @@ blueprint = Blueprint('classifier', __name__, url_prefix='/')
 
 
 @blueprint.route('classify', methods=['POST'])
-def classify() -> Union[str, Response]:
+def classify() -> Response:
     """Classifier routing."""
     stream: IO[bytes]
     if request.headers.get('Content-type') is not None:
@@ -48,7 +53,7 @@ def classify() -> Union[str, Response]:
     return response
 
 @blueprint.route('status', methods=['GET', 'HEAD'])
-def service_status() -> Union[str, Response]:
+def service_status() -> Response:
     """Health check endpoint for classifier."""
     data, code, headers = health_check()
     return make_response(data, code, headers)
