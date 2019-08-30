@@ -4,7 +4,7 @@ Houses controllers for classifier service.
 Each controller function returns a 3-tuple of response data (``dict``), 
 status code (``int``), and extra response headers (``dict``).
 """
-from typing import Any, Dict, IO, Tuple
+from typing import Any, Dict, IO, List, Tuple
 from werkzeug.exceptions import InternalServerError, ServiceUnavailable
 
 from arxiv import status
