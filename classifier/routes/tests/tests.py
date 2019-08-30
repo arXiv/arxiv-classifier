@@ -34,12 +34,24 @@ class TestHealthCheck(APITest):
 
 class TestClassify(APITest):
     @mock.patch('classifier.routes.classify_stream')
-    def test_classify_returns_result(self, mock_classify_stream):
+    def test_classify_untyped_returns_result(self, mock_classify_stream):
         """Test returns results + status 200 when classify is successful."""
         mock_classify_stream.return_value = {'cs.DL': 0.375}
         expected_data = b'{"cs.DL":0.375}\n'
 
         response = self.client.post('/classify', data=b"mockcontent")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, expected_data)
+    
+    @mock.patch('classifier.routes.classify_stream')
+    def test_classify_returns_result(self, mock_classify_stream):
+        """Test returns results + status 200 when classify is successful."""
+        mock_classify_stream.return_value = {'cs.DL': 0.375}
+        expected_data = b'{"cs.DL":0.375}\n'
+
+        response = self.client.post('/classify', data=b"mockcontent",
+                                    headers={'Content-Type': "text/plain"})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, expected_data)
