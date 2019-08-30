@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 """arXiv classifier routes."""
-from typing import IO, Union
-=======
-"""arxiv classifier routes."""
 from typing import IO
->>>>>>> 2affd21... fixing types
 
 import io
 import json
