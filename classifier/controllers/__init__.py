@@ -4,13 +4,31 @@ Houses controllers for classifier service.
 Each controller function returns a 3-tuple of response data (``dict``), 
 status code (``int``), and extra response headers (``dict``).
 """
-from typing import Tuple, Dict, Any
+from typing import Any, Dict, IO, Tuple
 from werkzeug.exceptions import InternalServerError, ServiceUnavailable
 
 from arxiv import status
 
-from ..services import classifier
+from classifier.domain import Classification
+from classifier.services import classifier
 
+
+def classify_stream(doc: IO[bytes]) -> Dict[Classification, float]:
+    """
+    Classification of a document stream.
+
+    Parameters
+    ----------
+    doc
+        byte stream of the document.
+
+    Returns
+    -------
+    dict
+        Dictionary of { classification: probability } pairs.
+
+    """
+    return {}
 
 def health_check() -> Tuple[str, int, Dict[str, Any]]:
     """
