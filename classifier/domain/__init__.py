@@ -5,6 +5,11 @@ from dataclasses import dataclass
 from arxiv.taxonomy import Category
 
 @dataclass
-class ClassificationResult:
+class ClassifierPrediction:
+    """Represents a classification prediction."""
+    
     category: Category
-    log_likelihood: float
+    """Category for the prediction."""
+
+    probability: float
+    """Probability of the category."""
