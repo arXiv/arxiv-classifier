@@ -9,11 +9,11 @@ from werkzeug.exceptions import InternalServerError, ServiceUnavailable
 
 from arxiv import status
 
-from classifier.domain import ClassificationResult
+from classifier.domain import ClassifierPrediction
 from classifier.services import classifier
 
 
-def classify_stream(doc: IO[bytes]) -> List[ClassificationResult]:
+def classify_stream(doc: IO[bytes]) -> List[ClassifierPrediction]:
     """
     Classification of a document stream.
 
@@ -25,7 +25,7 @@ def classify_stream(doc: IO[bytes]) -> List[ClassificationResult]:
     Returns
     -------
     list
-        List of :class:`ClassificationResult` objects.
+        List of :class:`ClassifierPrediction` objects.
 
     """
     return []
