@@ -10,7 +10,7 @@ from sklearn.feature_extraction.text import HashingVectorizer
 from sklearn import naive_bayes
 from sklearn.externals import joblib
 
-from classifier.services import ngrams, textutil
+from . import ngrams, textutil
 
 MODEL_SAVEFILE = './trained-model.pkl'
 
