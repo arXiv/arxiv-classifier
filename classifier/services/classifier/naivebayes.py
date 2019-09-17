@@ -349,6 +349,8 @@ class ArticleClassifier:
             yvec = np.array(yvec, dtype='int')
             yield xvec, yvec
 
+
+
     @property
     def trained(self):
         return hasattr(self, 'classifier')

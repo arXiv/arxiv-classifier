@@ -9,4 +9,6 @@ import classifier.services.naivebayes
 
 def classify(content: bytes) -> List[ClassifierPrediction]:
     """Performs a classification."""
+
+    naivebayes.classify()
     
