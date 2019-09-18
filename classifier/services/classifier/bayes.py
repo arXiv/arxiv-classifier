@@ -13,6 +13,7 @@ from sklearn import naive_bayes
 from sklearn.externals import joblib
 
 from arxiv.base import logging
+import arxiv.taxonomy
 from . import ngrams, textutil
 
 logger = logging.getLogger(__name__)
@@ -51,6 +52,12 @@ class ArticleClassifier:
         if random:
             # TODO: Implement random stream processing
             raise NotImplementedError("Stream randomization not yet randomized.")
+
+        text = textutil.clean_text(stream)
+        vec = self.vectorizer.transform(text)
+        classes = [self.cat2ind.get(c, 0) for c in arxiv.taxonomy.CATEGORIES]
+        return vec, classes
+
 
     def classify(self, stream: IO) -> List[str]:
         """
