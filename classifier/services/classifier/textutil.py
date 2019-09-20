@@ -12,12 +12,15 @@ RE_NUMBER = re.compile(r'\b[0-9]+\b')
 RE_ALPHA_NUMERIC = re.compile(r'[^a-zA-Z0-9]+')
 
 
-def filename_descriptor(filename, desc):
+def filename_descriptor(filename: str, desc: str) -> str:
+    """
+    Utility function to add descriptor to filename.
+    """
     name, ext = os.path.splitext(filename)
     return '{}-{}{}'.format(filename, desc, ext)
 
 
-def normalize_unicode(txt):
+def normalize_unicode(txt: str) -> str:
     """
 
     Utilize several libraries to systematically remove / normalize unicode
@@ -42,7 +45,7 @@ def normalize_unicode(txt):
     return out
 
 
-def clean_text(txt):
+def clean_text(txt: str) -> str:
     """
     Normalize a string by removing intra-document variations which are not
     dependent on the underlying text. Additionally, removed some unnecessary
@@ -78,7 +81,7 @@ def clean_text(txt):
     return txt.strip()
 
 
-def clean_file(filename):
+def clean_file(filename: str) -> str:
     """
     Apply `clean_text` for all lines of a file.
 
