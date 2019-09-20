@@ -1,3 +1,5 @@
+from typing import List, Union
+
 import os
 
 from gensim import models
@@ -8,7 +10,7 @@ logging.basicConfig(
 )
 
 
-def _apply_phraser(infile, outfile, phraser):
+def _apply_phraser(infile: str, outfile: str, phraser: gensim.models.Phraser) -> None:
     """
     Simply apply the phraser to all documents in a file.
 
@@ -29,7 +31,8 @@ def _apply_phraser(infile, outfile, phraser):
             so.write('{}\n'.format(output))
 
 
-def _form_ngrams(infile, outfile, min_count=20, threshold=10.0):
+def _form_ngrams(infile: str, outfile: str, min_count: int = 20, 
+                 threshold: float = 10.0) -> None:
     """
     Takes input and output filenames to generate the next ngram level
 
@@ -55,7 +58,8 @@ def _form_ngrams(infile, outfile, min_count=20, threshold=10.0):
     _apply_phraser(infile, outfile, phraser)
 
 
-def ngram(infile, min_count=30, depth=5, threshold_sched=10.0):
+def ngram(infile: str, min_count: int = 30, depth: int = 5,
+          threshold_sched: Union[float, List[float]] = 10.0) -> List[str]:
     """
     Given a text file where one line represents one document, form the same
     document with ngrams, where the maximum length of the concatenated text
