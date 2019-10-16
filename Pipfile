@@ -6,6 +6,12 @@ verify_ssl = true
 [packages]
 arxiv-auth = "==0.4.1"
 arxiv-base = "==0.16.1.post2"
+dataclasses = "*"
+numpy = "*"
+sklearn = "*"
+gensim = "*"
+ftfy = "*"
+unidecode = "*"
 
 [dev-packages]
 pylint = "*"

@@ -5,7 +5,7 @@ from typing import List
 
 from classifier.domain import ClassifierPrediction
 
-import classifier.services.naivebayes
+import classifier.services.classifier.naivebayes
 
 def classify(content: bytes) -> List[ClassifierPrediction]:
     """Performs a classification."""
