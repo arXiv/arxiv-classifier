@@ -1,0 +1,50 @@
+[
+  { "id": "f1.txt",
+    "categories":["federalist"],
+    "filename": "f1.txt"
+  },
+  { "id": "f3.txt",
+    "categories":["federalist"],
+    "filename": "f3.txt"
+  },
+  { "id": "f4.txt",
+    "categories":["federalist"],
+    "filename": "f4.txt"
+  },
+  { "id": "f5.txt",
+    "categories":["federalist"],
+    "filename": "f5.txt"
+  },
+  { "id": "f6.txt",
+    "categories":["federalist"],
+    "filename": "f6.txt"
+  },
+  { "id": "f7.txt",
+    "categories":["federalist"],
+    "filename": "f7.txt"
+  },
+  { "id": "g1.txt",
+    "categories":["gilgamesh"],
+    "filename": "g1.txt"
+  },
+  { "id": "g2.txt",
+    "categories":["gilgamesh"],
+    "filename": "g2.txt"
+  },
+  { "id": "g3.txt",
+    "categories":["gilgamesh"],
+    "filename": "g3.txt"
+  },
+  { "id": "g4.txt",
+    "categories":["gilgamesh"],
+    "filename": "g4.txt"
+  },
+  { "id": "g5.txt",
+    "categories":["gilgamesh"],
+    "filename": "g5.txt"
+  },
+  { "id": "g6.txt",
+    "categories":["gilgamesh"],
+    "filename": "g6.txt"
+  }
+]

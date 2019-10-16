@@ -270,10 +270,12 @@ class ArticleClassifier:
         """
         with open(output_file, 'w') as output:
             for i, article in enumerate(articles):
-                # FIXME -- these articles don't necessarily have to be on disk
-                text = open(article).read()
-                text = textutil.clean_text(text)
-                output.write('{}\n'.format(text))
+
+                with open(article) as fin:
+                    for line in fin:
+                        output.write('{}\n'.format(textutil.clean_text(line)))
+
+        return output_file
 
     def _form_ngrams(self, articlefile, min_count=30,
                      schedule=(400, 300, 200, 100)):
