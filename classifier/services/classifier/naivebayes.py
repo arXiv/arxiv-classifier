@@ -5,6 +5,8 @@ import random
 import collections
 import itertools
 
+from typing import List
+
 import numpy as np
 from sklearn.feature_extraction.text import HashingVectorizer
 from sklearn import naive_bayes
@@ -243,18 +245,27 @@ class ArticleClassifier:
 
         articles = [m.get('filename') for m in metadata]
         articlefile = os.path.join(self.workdir, 'articles.txt')
+
         alltxts = self._concatenate_texts(articles, articlefile)
+        # At this point, alltxt should be a file where each line is
+        # the text from a single article.
+
         cleanfile = textutil.clean_file(alltxts)
+        # Creates new file that should just be the same as alltxts
+        # but UTF normalized and clenaed etc.
+        # This might be redundent with a call in _concatenate_texts()
 
         phrase4file = self._form_ngrams(cleanfile, **ngram_kwargs)
         os.remove(cleanfile)
 
+        # This will add the metadata back to the lines created by
+        # concatenate_texts.
         metafile = self._create_meta_format(phrase4file, metadata)
         os.remove(phrase4file)
 
         return metafile
 
-    def _concatenate_texts(self, articles, output_file):
+    def _concatenate_texts(self, articles: List[str], output_file):
         """
         Take a list of strings (filenames of article text files) and clean &
         concatenate them into a single text file where each line represents an
@@ -269,12 +280,12 @@ class ArticleClassifier:
             Filename into which to concatenate the files
         """
         with open(output_file, 'w') as output:
-            for i, article in enumerate(articles):
-
+            for article in articles:
                 with open(article) as fin:
                     for line in fin:
-                        output.write('{}\n'.format(textutil.clean_text(line)))
-
+                        output.write(textutil.clean_text(line))
+                        output.write(' ')
+                output.write('\n')  # Only one \n per article, watch indent
         return output_file
 
     def _form_ngrams(self, articlefile, min_count=30,
@@ -508,27 +519,38 @@ def decode_doc(doc):
     """
     art, cat, text = doc.split('|')
     art = art.strip()
+
+    # BDC34: Looks like just doing the primary category
     cat = next(iter([c.strip() for c in cat.split()]), '')
+
     text = text.strip()
     return art, cat, text
 
 
-def get_minibatch(doc_iter, size):
-    t, c = [], []
+# def get_minibatch(doc_iter, size):
+#     t, c = [], []
 
-    for doc in itertools.islice(doc_iter, size):
-        art, cat, text = decode_doc(doc)
+#     for doc in itertools.islice(doc_iter, size):
+#         art, cat, text = decode_doc(doc)
 
-        if cat:
-            t.append(text)
-            c.append(cat)
+#         if cat:
+#             t.append(text)
+#             c.append(cat)
 
-    return t, c
+#     return t, c
 
 
+# def iter_minibatches(doc_iter, nbatch):
+#     """Generator of minibatches."""
+#     t, y = get_minibatch(doc_iter, nbatch)
+#     while len(t):
+#         yield t, y
+#         t, y = get_minibatch(doc_iter, nbatch)
+
+# BDC34 not sure how minibatch would work during classify
+# since cat will always be None.
+# This version just doesn't do the batching.
 def iter_minibatches(doc_iter, nbatch):
-    """Generator of minibatches."""
-    t, y = get_minibatch(doc_iter, nbatch)
-    while len(t):
-        yield t, y
-        t, y = get_minibatch(doc_iter, nbatch)
+    for doc in doc_iter:
+        id, cats, text = decode_doc(doc)
+        yield [text], [cats]
