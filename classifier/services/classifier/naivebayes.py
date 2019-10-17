@@ -4,11 +4,11 @@ import time
 import random
 import collections
 import itertools
-import numpy as np
 
+import numpy as np
 from sklearn.feature_extraction.text import HashingVectorizer
 from sklearn import naive_bayes
-from sklearn.externals import joblib
+import joblib
 
 from . import ngrams, textutil
 

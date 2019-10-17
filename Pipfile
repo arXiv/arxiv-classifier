@@ -12,6 +12,7 @@ sklearn = "*"
 gensim = "*"
 ftfy = "*"
 unidecode = "*"
+joblib = "*"
 
 [dev-packages]
 pylint = "*"
