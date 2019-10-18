@@ -1,2 +1,4 @@
 *.pyc
 .noseids
+trained-model.pkl
+articles-4gram.txt-meta.txt

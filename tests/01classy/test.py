@@ -8,23 +8,6 @@ test_path_prfx = os.path.dirname(os.path.realpath(__file__)) + '/'
 
 
 class Test_ClassifierBasics(unittest.TestCase):
-
-    def test_concat_texts(self):
-        concat_out_target = 'test_concat_texts_outuput.txt'
-        articles = [test_path_prfx + 'f1.txt',
-                    test_path_prfx + 'g1.txt']
-        ac = ArticleClassifier()
-        concat_out = ac._concatenate_texts(articles, concat_out_target)
-        self.assertEqual(concat_out, concat_out_target)
-        with open(concat_out) as cfn:
-            first = cfn.readline()
-            self.assertIn("new york", first)
-            self.assertNotIn("yorkwhen", first)
-            self.assertNotIn("gilgamesh", first)
-            second = cfn.readline()
-            self.assertNotIn("new york", second)
-            self.assertIn("gilgamesh", second)
-
     def test_basic_training(self):
         with open(test_path_prfx + 'metadata.json') as mdjson:
             mdata = json.load(mdjson)

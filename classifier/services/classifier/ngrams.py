@@ -37,6 +37,7 @@ def _form_ngrams(infile, outfile, min_count=20, threshold=10.0):
     ----------
     infile : string
         File name of text file of documents
+        This is a file where each line is the whole text for an article
 
     outfile : string
         Filename of output file
@@ -52,6 +53,8 @@ def _form_ngrams(infile, outfile, min_count=20, threshold=10.0):
         sentences, min_count=min_count, threshold=threshold
     )
     phraser = models.phrases.Phraser(phrases)
+    # phraser is now a trained with the text of all the lines in infile.
+    # That means it is trained on the text of all the articles.
     _apply_phraser(infile, outfile, phraser)
 
 
