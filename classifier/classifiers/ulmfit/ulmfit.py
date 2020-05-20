@@ -67,7 +67,7 @@ class ULMFiTClassifier(CategoryClassifier):
             article.title or '',
             article.abstract or ''
         ]
-        probabilities = self.learner.predict(inputs)[1].numpy()
+        probabilities = self.learner.predict(inputs)[2].numpy()
         return list(zip(self.learner.data.classes, probabilities))
 
     def classify(self, article: Article, top_k: int = 5) -> List[ClassifierPrediction]:
