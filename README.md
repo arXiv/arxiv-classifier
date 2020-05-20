@@ -54,7 +54,7 @@ and make a request:
 curl -s -H "Content-Type: application/json" -X POST http://localhost:9999/classify \
     --data '{"title":"P = NP", "abstract": "We prove that P = NP for N = 1 or P = 0."}'
 
-[{"category":"cs.CC","probability":1.0},{"category":"acc-phys","probability":0.0},...]
+[{"category":"cs.CC","probability":0.8264293074607849},{"category":"cs.DS","probability":0.1285623162984848},...]
 ```
 
 Both the input and output format are not yet compatible with the Naive Bayes classifier.
