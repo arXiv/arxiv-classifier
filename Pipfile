@@ -4,7 +4,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
-arxiv-auth = "==0.4.1"
 arxiv-base = "==0.16.1.post2"
 dataclasses = "*"
 numpy = "*"
