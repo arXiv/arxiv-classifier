@@ -1,0 +1,10 @@
+[Unit]
+Description=arXiv abstract/title classifier 
+After=Network.target
+
+[Service]
+User=busybody
+Group=busybody
+WorkingDirectory=/users/e-prints/arxiv-classifier
+Type=simple
+ExecStart=/users/e-prints/arxiv-classifier/classifier-service.sh
