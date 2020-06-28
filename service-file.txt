@@ -1,0 +1,8 @@
+[Unit]
+Description=arXiv abstract/title classifier 
+Requires=Network.target
+After=Network.target
+
+[Service]
+Type=simple
+ExecStart=/users/e-prints/arxiv-classifier/classifier-service.sh

@@ -11,6 +11,7 @@ from arxiv import status
 
 from classifier.domain import ClassifierPrediction
 from classifier.services import classifier
+import json
 
 
 def classify_stream(doc: IO[bytes]) -> List[ClassifierPrediction]:
@@ -28,7 +29,10 @@ def classify_stream(doc: IO[bytes]) -> List[ClassifierPrediction]:
         List of :class:`ClassifierPrediction` objects.
 
     """
-    return []
+    doc = json.load(doc)
+    if not isinstance(doc, dict):
+        raise Exception('Incorrect input format')
+    return classifier.classify(doc)
 
 def health_check() -> Tuple[str, int, Dict[str, Any]]:
     """
