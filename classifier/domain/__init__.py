@@ -5,10 +5,11 @@ from typing import List
 
 from arxiv.taxonomy import Category
 
+
 @dataclass
 class ClassifierPrediction:
     """Represents a classification prediction."""
-    
+
     category: Category
     """Category for the prediction."""
 
@@ -32,6 +33,9 @@ class Article:
     fulltext: str = None
     """Full text of the article."""
 
+    primary: str = None
+    """proposed or announced primary category."""
+
     @classmethod
     def from_dict(cls, doc: dict) -> 'Article':
         """
@@ -42,6 +46,10 @@ class Article:
             title=doc.get('title', ''),
             abstract=doc.get('abstract', ''),
             authors=[],  # ignore for now
-            fulltext=doc.get('fulltext', '')
+            fulltext=doc.get('fulltext', ''),
+            primary=doc.get('primary', '')
         )
 
+    def __hash__(self):
+        return hash((self.title, self.abstract, self.fulltext)
+                    + tuple(self.authors))

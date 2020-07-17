@@ -1,6 +1,8 @@
 """
-ULMFiT based arXiv category classifier with SentencePiece tokenization. Currently ignores article's authors and
-fulltext when predicting.
+ULMFiT based arXiv category classifier with SentencePiece tokenization. 
+
+
+Currently ignores article's authors and fulltext when predicting.
 """
 from classifier.classifiers import CategoryClassifier
 from typing import List, Union, Tuple
@@ -96,4 +98,15 @@ class ULMFiTClassifier(CategoryClassifier):
         ]
 
         predictions = sorted(predictions, key=lambda p: p.probability, reverse=True)
-        return predictions[:top_k]
+        top = predictions[:top_k]
+        
+        if article.primary:
+            primary_pred_in_top = next((pred for pred in top if
+                                        pred.category == article.primary), None)
+            if not primary_pred_in_top:
+                primary_pred = next((pred for pred in predictions if
+                                     pred.category == article.primary), None)
+                if primary_pred:
+                    top.append(primary_pred)
+
+        return top
