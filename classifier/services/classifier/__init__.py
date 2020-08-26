@@ -12,7 +12,6 @@ from classifier.classifiers import CategoryClassifier
 from classifier.classifiers.ulmfit import ULMFiTClassifier
 from werkzeug.exceptions import InternalServerError
 
-import functools
 
 def create_classifier() -> CategoryClassifier:
     """
@@ -56,6 +55,5 @@ def classify(doc: dict) -> List[ClassifierPrediction]:
     return classify_article(article)
 
 
-@functools.lru_cache()
 def classify_article(article: Article) -> List[ClassifierPrediction]:
     return get_classifier().classify(article)
