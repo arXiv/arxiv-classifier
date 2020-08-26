@@ -59,4 +59,5 @@ def classify() -> Response:
 def service_status() -> Response:
     """Health check endpoint for classifier."""
     data, code, headers = health_check()
+    test = serialize.as_json(data)
     return make_response(data, code, headers)

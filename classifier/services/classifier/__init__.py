@@ -52,7 +52,8 @@ def classify(doc: dict) -> List[ClassifierPrediction]:
     """
 
     article = Article.from_dict(doc)
-    classifier = get_classifier()
-    return classifier.classify(article)
+    return classify_article(article)
 
 
+def classify_article(article: Article) -> List[ClassifierPrediction]:
+    return get_classifier().classify(article)
