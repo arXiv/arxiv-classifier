@@ -7,9 +7,16 @@ Currently ignores article's authors and fulltext when predicting.
 from classifier.classifiers import CategoryClassifier
 from typing import List, Union, Tuple
 from classifier.domain import ClassifierPrediction, Article
-from arxiv.taxonomy import Category
+from arxiv.taxonomy import Category, CATEGORIES
 from fastai.text import load_learner, SPProcessor
 from pathlib import Path
+
+# These are older categories that should new papers
+# should not be classified into.
+NEVER_CLASSIFY = tuple(key for key in CATEGORIES.keys()
+                       if not CATEGORIES[key]['is_active'])
+
+DEFAULT_PRECISION = 2
 
 
 class ULMFiTClassifier(CategoryClassifier):
@@ -23,6 +30,8 @@ class ULMFiTClassifier(CategoryClassifier):
         """
         self.path = Path(path)
         self._load_model()
+        self.never_classify = NEVER_CLASSIFY
+        self.digits = DEFAULT_PRECISION
 
     def _load_model(self) -> None:
         """
@@ -72,6 +81,10 @@ class ULMFiTClassifier(CategoryClassifier):
         probabilities = self.learner.predict(inputs)[2].numpy()
         return list(zip(self.learner.data.classes, probabilities))
 
+    def _format(self, cat: ClassifierPrediction) -> ClassifierPrediction:
+        cat.probability = float(f"%.{self.digits}f" % cat.probability)
+        return cat
+
     def classify(self, article: Article, top_k: int = 5) -> List[ClassifierPrediction]:
         """
         Classify an article.
@@ -88,6 +101,7 @@ class ULMFiTClassifier(CategoryClassifier):
         list
             List of :class:`ClassifierPrediction` objects.
         """
+        minimum = 1 / 10 ** self.digits 
         predictions = [
             ClassifierPrediction(
                 Category(category),
@@ -98,7 +112,11 @@ class ULMFiTClassifier(CategoryClassifier):
         ]
 
         predictions = sorted(predictions, key=lambda p: p.probability, reverse=True)
-        top = predictions[:top_k]
+        filtered = [self._format(cat)
+                    for cat in predictions
+                    if cat.category not in self.never_classify
+                    and cat.probability >= minimum]
+        top = filtered[:top_k]
         
         if article.primary:
             primary_pred_in_top = next((pred for pred in top if
@@ -107,6 +125,6 @@ class ULMFiTClassifier(CategoryClassifier):
                 primary_pred = next((pred for pred in predictions if
                                      pred.category == article.primary), None)
                 if primary_pred:
-                    top.append(primary_pred)
+                    top.append(self._format(primary_pred))
 
         return top
