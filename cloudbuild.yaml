@@ -18,6 +18,8 @@ steps:
     '--label', 'github-repo=$REPO_NAME',
     '.' ]
   # Deploy to GCP
+  # Zone us-east1-d chosen for no specific reason
+  # Instance name must start with a-z and be in [a-z0-9-]
   - name: 'gcr.io/cloud-builders/gcloud-slim'
     args: ['compute', 'instances', 'create-with-container',
     '$REPO_NAME-$SHORT_SHA' ,
