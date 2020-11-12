@@ -1,6 +1,7 @@
 steps:
   # Copy down the model
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+  #    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+  - name: 'gcr.io/cloud-builders/gcloud-slim'
     entrypoint: 'bash'
     args:
       - '-c'
@@ -17,7 +18,7 @@ steps:
     '--label', 'github-repo=$REPO_NAME',
     '.' ]
   # Deploy to GCP
-  - name: 'gcr.io/cloud-builders/gcloud:slim'
+  - name: 'gcr.io/cloud-builders/gcloud-slim'
     args: [ 'gcloud',  'compute', 'instances', 'create-with-container',
     '$REPO_NAME:$SHORT_SHA' ,
     '--container-image',
