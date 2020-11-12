@@ -20,7 +20,7 @@ steps:
   # Deploy to GCP
   - name: 'gcr.io/cloud-builders/gcloud-slim'
     args: ['compute', 'instances', 'create-with-container',
-    '$REPO_NAME:$SHORT_SHA' ,
+    '$REPO_NAME-$SHORT_SHA' ,
     '--zone', 'us-east1-d',
     '--container-image',
     'gcr.io/$PROJECT_ID/classifier:latest']
