@@ -9,6 +9,11 @@ steps:
         tar xf models.tar
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'gcr.io/arxiv-classifier-dev/classifier', '.' ]
+    args: [ 'build',
+    '--build-arg', 'git_commit=$SHORT_SHA',
+    '-t', 'gcr.io/$PROJECT_ID/classifier',
+    '--label', 'git-commit=$SHORT_SHA',
+    '--label', 'github-repo=$REPO_NAME',
+    '.' ]
 
-images: ['gcr.io/arxiv-classifier-dev/classifier']
+images: ['gcr.io/$PROJECT_ID/classifier']
