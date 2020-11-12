@@ -1,0 +1,14 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |      
+        gsutil cp gs://arxiv-classifier-dev-models/models.tar.xz models.tar.xz
+        xz --decompress models.tar.xz
+        tar xf models.tar
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/arxiv-classifier-dev/classifier', '.' ]
+
+images: ['gcr.io/arxiv-classifier-dev/classifier']
