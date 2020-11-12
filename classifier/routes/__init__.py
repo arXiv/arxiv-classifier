@@ -2,13 +2,11 @@
 from typing import IO
 
 import io
-import json
 
 from flask import Blueprint, current_app, jsonify, make_response, request, Response
 from werkzeug.exceptions import HTTPException, BadRequest, RequestEntityTooLarge
 
-from arxiv import status
-from arxiv.base import logging
+import logging
 
 from classifier.controllers import classify_stream, health_check
 from . import serialize
