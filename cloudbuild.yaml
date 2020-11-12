@@ -1,5 +1,6 @@
 steps:
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  # Copy down the model
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     entrypoint: 'bash'
     args:
       - '-c'
@@ -7,7 +8,7 @@ steps:
         gsutil cp gs://arxiv-classifier-dev-models/models.tar.xz models.tar.xz
         xz --decompress models.tar.xz
         tar xf models.tar
-
+  # Do the docker build
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build',
     '--build-arg', 'git_commit=$SHORT_SHA',
@@ -15,5 +16,11 @@ steps:
     '--label', 'git-commit=$SHORT_SHA',
     '--label', 'github-repo=$REPO_NAME',
     '.' ]
+  # Deploy to GCP
+  - name: 'gcr.io/cloud-builders/gcloud:slim'
+    args: [ 'gcloud',  'compute', 'instances', 'create-with-container',
+    '$REPO_NAME:$SHORT_SHA' ,
+    '--container-image',
+    'gcr.io/$PROJECT_ID/classifier:latest']
 
 images: ['gcr.io/$PROJECT_ID/classifier']
