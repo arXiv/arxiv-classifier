@@ -41,3 +41,4 @@ entrypoint ["/opt/venv/bin/gunicorn", "-w", "4",\
            "--log-file=-",\
            "--worker-tmp-dir", "/dev/shm",\
            "classifier.test_app:create_app()"]
+
