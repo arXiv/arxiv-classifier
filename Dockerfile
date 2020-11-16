@@ -21,7 +21,7 @@ RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 COPY requirements.txt ./
-RUN pip install --no-dep -r requirements.txt
+RUN pip install --no-deps -r requirements.txt
  
 ########## STAGE 2 ##############
 FROM python:3.6-slim as build-image
