@@ -12,7 +12,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build',
     '--build-arg', 'git_commit=$SHORT_SHA',
-    '-t', 'gcr.io/arxiv-classifer/classifier',
+    '-t', 'gcr.io/arxiv-classifier/classifier',
     '--label', 'git-commit=$SHORT_SHA',
     '--label', 'github-repo=$REPO_NAME',
     '.' ]
@@ -21,7 +21,7 @@ steps:
   # Instance name must start with a-z and be in [a-z0-9-]
   - name: 'gcr.io/cloud-builders/gcloud-slim'
     args: ['compute', 'instances', 'update-container',
-    'classifer-vm' ,
+    'classifier-vm' ,
     '--zone', 'us-east1-d',
     '--container-image',
     'gcr.io/arxiv-classifier/classifier:latest']
