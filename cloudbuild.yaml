@@ -20,10 +20,10 @@ steps:
   # Zone us-east1-d chosen for no specific reason
   # Instance name must start with a-z and be in [a-z0-9-]
   - name: 'gcr.io/cloud-builders/gcloud-slim'
-    args: ['compute', 'instances', 'create-with-container',
+    args: ['compute', 'instances', 'update-container',
     'classifer-vm' ,
     '--zone', 'us-east1-d',
     '--container-image',
     'gcr.io/arxiv-classifier/classifier:latest']
 
-images: ['gcr.io/$PROJECT_ID/classifier']
+images: ['gcr.io/arxiv-classifier/classifier']
