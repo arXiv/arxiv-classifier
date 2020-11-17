@@ -1,6 +1,5 @@
 steps:
   # Copy down the model
-  #    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
   - name: 'gcr.io/cloud-builders/gcloud-slim'
     entrypoint: 'bash'
     args:
@@ -13,7 +12,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build',
     '--build-arg', 'git_commit=$SHORT_SHA',
-    '-t', 'gcr.io/$PROJECT_ID/classifier',
+    '-t', 'gcr.io/arxiv-classifer/classifier',
     '--label', 'git-commit=$SHORT_SHA',
     '--label', 'github-repo=$REPO_NAME',
     '.' ]
@@ -22,9 +21,9 @@ steps:
   # Instance name must start with a-z and be in [a-z0-9-]
   - name: 'gcr.io/cloud-builders/gcloud-slim'
     args: ['compute', 'instances', 'create-with-container',
-    '$REPO_NAME-$SHORT_SHA' ,
+    'classifer-vm' ,
     '--zone', 'us-east1-d',
     '--container-image',
-    'gcr.io/$PROJECT_ID/classifier:latest']
+    'gcr.io/arxiv-classifier/classifier:latest']
 
 images: ['gcr.io/$PROJECT_ID/classifier']
