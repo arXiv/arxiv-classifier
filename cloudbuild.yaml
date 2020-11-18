@@ -12,7 +12,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build',
     '--build-arg', 'git_commit=$SHORT_SHA',
-    '-t', 'gcr.io/arxiv-classifier/classifier',
+    '-t', 'gcr.io/arxiv-classifier-dev/classifier',
     '--label', 'git-commit=$SHORT_SHA',
     '--label', 'github-repo=$REPO_NAME',
     '.' ]
@@ -24,6 +24,6 @@ steps:
     'classifier-vm' ,
     '--zone', 'us-east1-d',
     '--container-image',
-    'gcr.io/arxiv-classifier/classifier:latest']
+    'gcr.io/arxiv-classifier-dev/classifier:latest']
 
-images: ['gcr.io/arxiv-classifier/classifier']
+images: ['gcr.io/arxiv-classifier-dev/classifier']
