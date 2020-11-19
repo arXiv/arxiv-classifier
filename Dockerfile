@@ -39,7 +39,7 @@ ADD classifier /opt/arxiv/classifier
 entrypoint ["/opt/venv/bin/gunicorn", \
            "--user", "12345", \
            "-w", "4",\
-           "-b", "0.0.0.0:80",\
+           "-b", "0.0.0.0:9808",\
            "--log-file=-",\
            "--worker-tmp-dir", "/dev/shm",\
            "classifier.test_app:create_app()"]
