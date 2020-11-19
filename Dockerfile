@@ -36,8 +36,10 @@ COPY --from=compile-image /opt/venv /opt/venv
 RUN echo $git_commit > /git-commit.txt
 ADD classifier /opt/arxiv/classifier
 
-entrypoint ["/opt/venv/bin/gunicorn", "-w", "4",\
-           "-b", "0.0.0.0:9808",\
+entrypoint ["/opt/venv/bin/gunicorn", \
+           "--user", "12345", \
+           "-w", "4",\
+           "-b", "0.0.0.0:80",\
            "--log-file=-",\
            "--worker-tmp-dir", "/dev/shm",\
            "classifier.test_app:create_app()"]
