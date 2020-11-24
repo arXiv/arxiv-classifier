@@ -5,26 +5,26 @@ set -ev
 # Modified slightly for wsgi port at $PORT
 
 # reserve an IP address
-# gcloud compute addresses create lb-ipv4-classifier \
-#        --project=$PROJ \
-#        --ip-version=IPV4 \
-#        --global
+gcloud compute addresses create lb-ipv4-classifier \
+       --project=$PROJ \
+       --ip-version=IPV4 \
+       --global
        
 
 # # Need a health check for the load balancer to know if the backend is up
-# gcloud compute health-checks create http classifier-health-check \
-#        --port $PORT \
-#        --request-path="/status" \
-#        --check-interval 20s \
-#        --healthy-threshold 1 \
-#        --unhealthy-threshold 3 \
-#        --project=$PROJ \
+gcloud compute health-checks create http classifier-health-check \
+       --port $PORT \
+       --request-path="/status" \
+       --check-interval 20s \
+       --healthy-threshold 1 \
+       --unhealthy-threshold 3 \
+       --project=$PROJ \
 
 # # Need to open the firewall to perform health check on instances
-# gcloud compute firewall-rules create allow-classifier-health-check \
-#         --allow tcp:$PORT \
-#         --source-ranges 130.211.0.0/22,35.191.0.0/16 \
-#         --network default
+gcloud compute firewall-rules create allow-classifier-health-check \
+        --allow tcp:$PORT \
+        --source-ranges 130.211.0.0/22,35.191.0.0/16 \
+        --network default
 
 # Create a backend service
 gcloud compute backend-services create classifier-backend-service \
