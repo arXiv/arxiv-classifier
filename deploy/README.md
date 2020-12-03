@@ -66,6 +66,8 @@ the second is to start a rolling update.
 
 ```
 cd arxiv-classifier/deploy
-./update-image.sh "SOME_GCP_IMAGE_URL"
+./update-image.sh "SOME_GCP_IMAGE_URL"`
 ```
 
+# Build triggers
+TODO: describe the build trigger and how to set them up
