@@ -1,3 +1,4 @@
+#!/bin/bash
 ### Setting up the load balancer ###
 set -ev
 
@@ -64,6 +65,7 @@ gcloud compute forwarding-rules create classifier-dev-forwarding-rule \
        --global \
       --ports=443
 
+## TODO Maybe remove this? Is it redundent?
 #  Create a target HTTPS proxy to route requests to your URL map. 
 # The proxy is the portion of the load balancer that holds the SSL certificate 
 # for HTTPS Load Balancing, so you also load your certificate before this step.

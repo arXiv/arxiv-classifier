@@ -1,4 +1,6 @@
+#!/bin/bash
 # makes the managed instance group for the classifier #
+set -ev
 
 # TODO There is no updating of instance-templates.
 # Need some way to have instance-templates that we create
@@ -40,18 +42,4 @@ then
 else
     echo "Skipping creating a new instance group since one already exists."
 fi
-
 exit 0
-
-#UPDATe PROCESS
-  gcloud compute instance-templates create-with-container classifier-templatev2 \
-           --machine-type e2-medium \
-           --tag=allow-classifier-health-check \
-           --container-image $IMAGE_URL
-
-  gcloud compute instance-groups managed set-instance-template $CLASSIFIER_MIG --template=classifier-templatev2 --zone=$ZONE
-
-  gcloud compute instance-groups managed rolling-action start-update $CLASSIFIER_MIG \
-    --version template=classifier-templatev2 \
-    --max-surge 4 \
-    --zone=$ZONE

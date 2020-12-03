@@ -1,4 +1,6 @@
-  ### upload SSL cert to GCP ###
+#!/bin/bash
+### upload SSL cert to GCP ###
+set -ve
 if [ ! -e "labs.arxiv.org.key" ] 
 then
   echo "The labs.arxiv.org.key is required. Get it from lastpass."
