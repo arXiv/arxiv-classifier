@@ -47,7 +47,7 @@ pyparsing==2.4.7
 pyrsistent==0.16.0
 python-dateutil==2.8.1
 pytz==2020.1
-pyyaml==5.3.1
+pyyaml==5.4
 requests==2.23.0
 s3transfer==0.3.3
 scikit-learn==0.23.1
