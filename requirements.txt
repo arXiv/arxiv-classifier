@@ -60,7 +60,7 @@ tqdm==4.46.0
 typing==3.7.4.1
 typing-extensions==3.7.4.2
 unidecode==1.1.1
-urllib3==1.25.9
+urllib3==1.26.5
 wasabi==0.6.0
 wcwidth==0.1.9
 webencodings==0.5.1
