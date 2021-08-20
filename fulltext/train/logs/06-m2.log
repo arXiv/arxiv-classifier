@@ -1,0 +1,57 @@
+
+Log information on successful build of abstract and fulltext-small models 
+arxiv-bgm37-2 project
+
+
+Instance name Zone Environment Version Auto-upgrade Environment Machine type GPUs Permission Last modified
+pytorch-1-9-20210726-145010		us-central1-b	M75	—	PyTorch:1.9	Accelerator Optimized: 1 NVIDIA Tesla A100 GPU, 12 vCPUs, 85GB RAM 	NVIDIA TESLA A100 x 1
+Service account	Aug 16, 2021, 10:47:09 AM
+
+
+
+----------
+Files on disk for the two models
+----------
+(base) jupyter@pytorch-1-9-20210726-145010:~/abstract$ find .
+.
+./models
+./models/spm.vocab
+./models/spm.model
+./models/reproduce_abstract_model.pkl.pth
+./models/lm.pth
+./models/reproduce_abstract_model_b.pkl
+./train-abstract-ds1-m1.ipynb
+./logs
+./logs/nvidia-smi-dataset1_m1.log
+./logs/nvidia-smi-dataset1_m1b.log
+./.ipynb_checkpoints
+./.ipynb_checkpoints/08-train-ulmfit-fulltext-checkpoint.ipynb
+./.ipynb_checkpoints/train-abstract-ds1-m1-checkpoint.ipynb
+./data
+./data/arxiv-tag-classifier-data.json
+./data/valid_df.pkl.gz
+./data/train_df.pkl.gz
+./data/classifier.tsv
+./data/test_df.pkl.gz
+
+(base) jupyter@pytorch-1-9-20210726-145010:~/fulltext$ find .
+.
+./gcp-notebook-req.txt
+./09-gcp-fulltext-ds2-m2.ipynb
+./models
+./models/spm.vocab
+./models/spm.model
+./models/full-text-ds2-m2.pkl.pth.bak
+./models/lm.pth
+./logs
+./logs/nvidia-smi-fulltext-ds2-m2.log
+./.ipynb_checkpoints
+./.ipynb_checkpoints/Untitled-checkpoint.ipynb
+./.ipynb_checkpoints/09-gcp-fulltext-ds2-m2-checkpoint.ipynb
+./.ipynb_checkpoints/09-gcp-fulltext-checkpoint.ipynb
+./.ipynb_checkpoints/gcp-notebook-req-checkpoint.txt
+./data
+./data/data.json
+./Untitled.ipynb
+
+

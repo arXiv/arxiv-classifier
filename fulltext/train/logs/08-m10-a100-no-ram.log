@@ -1,0 +1,11 @@
+# 08-m10.log
+
+In 07.log, ran out of memory using the A100.
+
+Also ran out using: n1-standard-64 (64 vCPUs, ___240??___ GB RAM) 
+  pytorch-1-9-20210818-081745		us-central1-c	M75	—	PyTorch:1.9	32 vCPUs, 208 GB RAM 	NVIDIA Tesla T4 x 4
+  Service account	Aug 18, 2021, 10:38:51 AM
+  item list bunching, at 23%: 59% memory used
+
+Try highmem.
+

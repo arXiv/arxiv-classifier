@@ -1,0 +1,52 @@
+# File: 09-m10.log
+
+Using highmem machine type to get 400GB RAM to load training json data.
+
+
+Region
+us-west1 (Oregon)
+Zone
+us-west1-b
+Environment 
+PyTorch 1.9 (with Intel® MKL-DNN/MKL)
+Environment version
+M75
+Machine type 
+n1-highmem-64 (64 vCPUs, 416 GB RAM)
+GPU 
+NVIDIA Tesla T4 x 4
+Boot disk
+100 GB disk
+Data disk
+300 GB disk
+Created
+Aug 18, 2021, 1:37:40 PM
+Last modified
+Aug 18, 2021, 1:45:06 PM
+Backup
+Not specified
+Subnetwork
+default
+Service account
+874717964009-compute@developer.gserviceaccount.com
+Permission mode
+Service account
+Sudo access
+Enabled
+File downloads
+Enabled
+nbconvert
+Enabled
+Extensions
+BigQuery, GCS Filebrowser, Vizier
+Instance health
+System health report enabled
+Custom metrics reporting not enabled
+Cloud Monitoring agent not installed
+Shielded VM
+Secure Boot not enabled
+vTPM enabled
+Integrity Monitoring enabled
+
+
+

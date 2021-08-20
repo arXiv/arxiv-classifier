@@ -1,0 +1,79 @@
+using n1-highmem-64 (64 vCPUs, 416 GB RAM)
+
+after bs=64
+
+---------------------------------------------------------------------------
+BrokenProcessPool                         Traceback (most recent call last)
+/tmp/ipykernel_35345/98010739.py in <module>
+      1 data_clas = ItemLists(Path('.'), train_tl, validate_tl)\
+----> 2     .label_from_df(["primary_category"])\
+      3     .databunch(bs=64)
+
+/opt/conda/lib/python3.7/site-packages/fastai/data_block.py in _inner(*args, **kwargs)
+    482             self.valid = fv(*args, from_item_lists=True, **kwargs)
+    483             self.__class__ = LabelLists
+--> 484             self.process()
+    485             return self
+    486         return _inner
+
+/opt/conda/lib/python3.7/site-packages/fastai/data_block.py in process(self)
+    536         "Process the inner datasets."
+    537         xp,yp = self.get_processors()
+--> 538         for ds,n in zip(self.lists, ['train','valid','test']): ds.process(xp, yp, name=n)
+    539         #progress_bar clear the outputs so in some case warnings issued during processing disappear.
+    540         for ds in self.lists:
+
+/opt/conda/lib/python3.7/site-packages/fastai/data_block.py in process(self, xp, yp, name, max_warn_items)
+    716                     p.warns = []
+    717                 self.x,self.y = self.x[~filt],self.y[~filt]
+--> 718         self.x.process(xp)
+    719         return self
+    720
+
+/opt/conda/lib/python3.7/site-packages/fastai/data_block.py in process(self, processor)
+     82         if processor is not None: self.processor = processor
+     83         self.processor = listify(self.processor)
+---> 84         for p in self.processor: p.process(self)
+     85         return self
+     86
+
+/opt/conda/lib/python3.7/site-packages/fastai/text/data.py in process(self, ds)
+    471         else:
+    472             with ProcessPoolExecutor(self.n_cpus) as e:
+--> 473                 ds.items = np.array(sum(e.map(self._encode_batch, partition_by_cores(ds.items, self.n_cpus)), []))
+    474         ds.vocab = self.vocab
+    475
+
+/opt/conda/lib/python3.7/concurrent/futures/process.py in _chain_from_iterable_of_lists(iterable)
+    481     careful not to keep references to yielded objects.
+    482     """
+--> 483     for element in iterable:
+    484         element.reverse()
+    485         while element:
+
+/opt/conda/lib/python3.7/concurrent/futures/_base.py in result_iterator()
+    596                     # Careful not to keep a reference to the popped future
+    597                     if timeout is None:
+--> 598                         yield fs.pop().result()
+    599                     else:
+    600                         yield fs.pop().result(end_time - time.monotonic())
+
+/opt/conda/lib/python3.7/concurrent/futures/_base.py in result(self, timeout)
+    433                 raise CancelledError()
+    434             elif self._state == FINISHED:
+--> 435                 return self.__get_result()
+    436             else:
+    437                 raise TimeoutError()
+
+/opt/conda/lib/python3.7/concurrent/futures/_base.py in __get_result(self)
+    382     def __get_result(self):
+    383         if self._exception:
+--> 384             raise self._exception
+    385         else:
+    386             return self._result
+
+BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.
+
+
+
+

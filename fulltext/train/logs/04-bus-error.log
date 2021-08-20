@@ -1,0 +1,240 @@
+Using a c2 instance - no gpu
+
+
+learn.fit_one_cycle(1, 1e-2)
+
+RuntimeError: DataLoader worker (pid 818) is killed by signal: Bus error. It is possible that dataloader's workers are out of shared memory. Please try to raise your shared memory limit.
+
+Ideas:
+  Unable to write to file </torch_18692_1954506624>
+    https://discuss.pytorch.org/t/unable-to-write-to-file-torch-18692-1954506624/9990/2
+  What Is /dev/shm And Its Practical Usage
+    https://www.cyberciti.biz/tips/what-is-devshm-and-its-practical-usage.html
+    /dev/shm is nothing but implementation of traditional shared memory concept.
+    sudo mount -o remount,size=8G /dev/shm
+    mount -t tmpfs -o size=5G,nr_inodes=5k,mode=700 tmpfs /disk2/tmpfs
+
+  PyTorch: Docker Image
+    https://github.com/pytorch/pytorch#docker-image
+    Please note that PyTorch uses shared memory to share data between processes, so if torch multiprocessing is used (e.g. for multithreaded data loaders) the default shared memory segment size that container runs with is not enough, and you should increase shared memory size either with --ipc=host or --shm-size command line options to nvidia-docker run.
+
+df -h /dev/shm/
+Filesystem      Size  Used Avail Use% Mounted on
+shm              64M   54M   11M  84% /dev/shm
+
+https://stackoverflow.com/questions/66456581/gcc-vm-machine-allocate-more-dev-shm-memory
+
+in notebook,
+vi
+shm /dev/shm tmpfs rw,nosuid,nodev,noexec,relatime,size=65536k 0 0
+
+gcloud compute ssh pytorch-1-4-c2-16-64g --zone us-central1-c
+in vm,
+tmpfs /dev/shm tmpfs rw,nosuid,nodev,size=8388608k 0 0
+
+bgm37@pytorch-1-4-c2-16-64g:~$ df  -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev             32G     0   32G   0% /dev
+tmpfs           6.3G  8.6M  6.3G   1% /run
+/dev/sda1        99G   38G   57G  40% /
+tmpfs            32G     0   32G   0% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs            32G     0   32G   0% /sys/fs/cgroup
+/dev/sda15      124M  5.7M  119M   5% /boot/efi
+/dev/sdb         98G   22G   77G  22% /home/jupyter
+tmpfs           6.3G     0  6.3G   0% /run/user/1005
+bgm37@pytorch-1-4-c2-16-64g:~$ sudo mount -o remount,size=8G /dev/shm
+bgm37@pytorch-1-4-c2-16-64g:~$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev             32G     0   32G   0% /dev
+tmpfs           6.3G  8.6M  6.3G   1% /run
+/dev/sda1        99G   38G   57G  40% /
+tmpfs           8.0G     0  8.0G   0% /dev/shm
+tmpfs           5.0M     0  5.0M   0% /run/lock
+tmpfs            32G     0   32G   0% /sys/fs/cgroup
+/dev/sda15      124M  5.7M  119M   5% /boot/efi
+/dev/sdb         98G   22G   77G  22% /home/jupyter
+tmpfs           6.3G     0  6.3G   0% /run/user/1005
+
+
+docker images
+REPOSITORY                                             TAG                 IMAGE ID            CREATED             SIZE
+gcr.io/deeplearning-platform-release/base-cu101        latest              1ada930542b7        4 weeks ago         8.48GB
+gcr.io/deeplearning-platform-release/base-cu100        latest              a0d9cd8fd2ed        4 weeks ago         7.87GB
+gcr.io/deeplearning-platform-release/base-cpu          latest              de178705f89d        4 weeks ago         5.07GB
+gcr.io/inverting-proxy/agent                           <none>              fe507176d0e6        5 months ago        1.73GB
+gcr.io/deeplearning-platform-release/pytorch-cpu.1-4   <none>              827eae6ea7a8        11 months ago       8.03GB
+
+Prices: c2
+  https://cloud.google.com/compute/vm-instance-pricing#compute-optimized_machine_types
+  Machine type	Virtual CPUs	Memory	Price (USD)	Preemptible price (USD)
+  c2-standard-4	4	16	$0.2088	$0.0505
+  c2-standard-8	8	32	$0.4176	$0.1011
+  c2-standard-16	16	64	$0.8352	$0.2021
+  c2-standard-30	30	120	$1.5660	$0.3790
+  c2-standard-60	60	240	$3.1321	$0.7579
+
+
+----------
+
+0.00% [0/1 00:00<00:00]
+epoch	train_loss	valid_loss	accuracy	time
+
+ Interrupted
+Traceback (most recent call last):
+  File "/opt/conda/lib/python3.7/multiprocessing/queues.py", line 236, in _feed
+    obj = _ForkingPickler.dumps(obj)
+  File "/opt/conda/lib/python3.7/multiprocessing/reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+Traceback (most recent call last):
+  File "/opt/conda/lib/python3.7/site-packages/torch/multiprocessing/reductions.py", line 333, in reduce_storage
+    fd, size = storage._share_fd_()
+RuntimeError: unable to write to file </torch_825_3083316960>
+  File "/opt/conda/lib/python3.7/multiprocessing/queues.py", line 236, in _feed
+    obj = _ForkingPickler.dumps(obj)
+  File "/opt/conda/lib/python3.7/multiprocessing/reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+  File "/opt/conda/lib/python3.7/site-packages/torch/multiprocessing/reductions.py", line 333, in reduce_storage
+    fd, size = storage._share_fd_()
+RuntimeError: unable to write to file </torch_822_1485838288>
+Traceback (most recent call last):
+  File "/opt/conda/lib/python3.7/multiprocessing/queues.py", line 236, in _feed
+    obj = _ForkingPickler.dumps(obj)
+  File "/opt/conda/lib/python3.7/multiprocessing/reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+  File "/opt/conda/lib/python3.7/site-packages/torch/multiprocessing/reductions.py", line 333, in reduce_storage
+    fd, size = storage._share_fd_()
+RuntimeError: unable to write to file </torch_822_3428820672>
+Traceback (most recent call last):
+  File "/opt/conda/lib/python3.7/multiprocessing/queues.py", line 236, in _feed
+    obj = _ForkingPickler.dumps(obj)
+  File "/opt/conda/lib/python3.7/multiprocessing/reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+  File "/opt/conda/lib/python3.7/site-packages/torch/multiprocessing/reductions.py", line 333, in reduce_storage
+    fd, size = storage._share_fd_()
+RuntimeError: unable to write to file </torch_830_581173701>
+Traceback (most recent call last):
+  File "/opt/conda/lib/python3.7/multiprocessing/queues.py", line 236, in _feed
+    obj = _ForkingPickler.dumps(obj)
+  File "/opt/conda/lib/python3.7/multiprocessing/reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+  File "/opt/conda/lib/python3.7/site-packages/torch/multiprocessing/reductions.py", line 333, in reduce_storage
+    fd, size = storage._share_fd_()
+RuntimeError: unable to write to file </torch_830_4184137292>
+---------------------------------------------------------------------------
+RuntimeError                              Traceback (most recent call last)
+/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.py in _try_get_data(self, timeout)
+    760         try:
+--> 761             data = self._data_queue.get(timeout=timeout)
+    762             return (True, data)
+
+/opt/conda/lib/python3.7/multiprocessing/queues.py in get(self, block, timeout)
+    103                     timeout = deadline - time.monotonic()
+--> 104                     if not self._poll(timeout):
+    105                         raise Empty
+
+/opt/conda/lib/python3.7/multiprocessing/connection.py in poll(self, timeout)
+    256         self._check_readable()
+--> 257         return self._poll(timeout)
+    258
+
+/opt/conda/lib/python3.7/multiprocessing/connection.py in _poll(self, timeout)
+    413     def _poll(self, timeout):
+--> 414         r = wait([self], timeout)
+    415         return bool(r)
+
+/opt/conda/lib/python3.7/multiprocessing/connection.py in wait(object_list, timeout)
+    920             while True:
+--> 921                 ready = selector.select(timeout)
+    922                 if ready:
+
+/opt/conda/lib/python3.7/selectors.py in select(self, timeout)
+    414         try:
+--> 415             fd_event_list = self._selector.poll(timeout)
+    416         except InterruptedError:
+
+/opt/conda/lib/python3.7/site-packages/torch/utils/data/_utils/signal_handling.py in handler(signum, frame)
+     65         # Python can still get and update the process status successfully.
+---> 66         _error_if_any_worker_fails()
+     67         if previous_handler is not None:
+
+RuntimeError: DataLoader worker (pid 818) is killed by signal: Bus error. It is possible that dataloader's workers are out of shared memory. Please try to raise your shared memory limit.
+
+During handling of the above exception, another exception occurred:
+
+RuntimeError                              Traceback (most recent call last)
+<ipython-input-18-3ea49add0339> in <module>
+----> 1 learn.fit_one_cycle(1, 1e-2)
+
+/opt/conda/lib/python3.7/site-packages/fastai/train.py in fit_one_cycle(learn, cyc_len, max_lr, moms, div_factor, pct_start, final_div, wd, callbacks, tot_epochs, start_epoch)
+     21     callbacks.append(OneCycleScheduler(learn, max_lr, moms=moms, div_factor=div_factor, pct_start=pct_start,
+     22                                        final_div=final_div, tot_epochs=tot_epochs, start_epoch=start_epoch))
+---> 23     learn.fit(cyc_len, max_lr, wd=wd, callbacks=callbacks)
+     24
+     25 def fit_fc(learn:Learner, tot_epochs:int=1, lr:float=defaults.lr,  moms:Tuple[float,float]=(0.95,0.85), start_pct:float=0.72,
+
+/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py in fit(self, epochs, lr, wd, callbacks)
+    198         else: self.opt.lr,self.opt.wd = lr,wd
+    199         callbacks = [cb(self) for cb in self.callback_fns + listify(defaults.extra_callback_fns)] + listify(callbacks)
+--> 200         fit(epochs, self, metrics=self.metrics, callbacks=self.callbacks+callbacks)
+    201
+    202     def create_opt(self, lr:Floats, wd:Floats=0.)->None:
+
+/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py in fit(epochs, learn, callbacks, metrics)
+     97             cb_handler.set_dl(learn.data.train_dl)
+     98             cb_handler.on_epoch_begin()
+---> 99             for xb,yb in progress_bar(learn.data.train_dl, parent=pbar):
+    100                 xb, yb = cb_handler.on_batch_begin(xb, yb)
+    101                 loss = loss_batch(learn.model, xb, yb, learn.loss_func, learn.opt, cb_handler)
+
+/opt/conda/lib/python3.7/site-packages/fastprogress/fastprogress.py in __iter__(self)
+     45         except Exception as e:
+     46             self.on_interrupt()
+---> 47             raise e
+     48
+     49     def update(self, val):
+
+/opt/conda/lib/python3.7/site-packages/fastprogress/fastprogress.py in __iter__(self)
+     39         if self.total != 0: self.update(0)
+     40         try:
+---> 41             for i,o in enumerate(self.gen):
+     42                 if i >= self.total: break
+     43                 yield o
+
+/opt/conda/lib/python3.7/site-packages/fastai/basic_data.py in __iter__(self)
+     73     def __iter__(self):
+     74         "Process and returns items from `DataLoader`."
+---> 75         for b in self.dl: yield self.proc_batch(b)
+     76
+     77     @classmethod
+
+/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.py in __next__(self)
+    343
+    344     def __next__(self):
+--> 345         data = self._next_data()
+    346         self._num_yielded += 1
+    347         if self._dataset_kind == _DatasetKind.Iterable and \
+
+/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.py in _next_data(self)
+    839
+    840             assert not self._shutdown and self._tasks_outstanding > 0
+--> 841             idx, data = self._get_data()
+    842             self._tasks_outstanding -= 1
+    843
+
+/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.py in _get_data(self)
+    806         else:
+    807             while True:
+--> 808                 success, data = self._try_get_data()
+    809                 if success:
+    810                     return data
+
+/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.py in _try_get_data(self, timeout)
+    772             if len(failed_workers) > 0:
+    773                 pids_str = ', '.join(str(w.pid) for w in failed_workers)
+--> 774                 raise RuntimeError('DataLoader worker (pid(s) {}) exited unexpectedly'.format(pids_str))
+    775             if isinstance(e, queue.Empty):
+    776                 return (False, None)
+
+RuntimeError: DataLoader worker (pid(s) 818) exited unexpectedly
+

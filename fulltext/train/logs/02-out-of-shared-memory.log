@@ -1,0 +1,104 @@
+Fri Aug 13 13:17:08 EDT 2021
+
+While building this model with an A100:
+  model_id      = 'm5'
+  dataset_id    = f'ds4'
+  dataset_name  = f'{dataset_id}-mixed-small'
+  dataset_types = ['train', 'validate']
+  use_num_cpus  = 11
+
+
+-------------------
+
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.7/multiprocessing/queues.py", line 236, in _feed
+    obj = _ForkingPickler.dumps(obj)
+  File "/root/miniconda3/lib/python3.7/multiprocessing/reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/multiprocessing/reductions.py", line 333, in reduce_storage
+    fd, size = storage._share_fd_()
+RuntimeError: unable to write to file </torch_3775_3184650697>
+Exception in thread Thread-4:
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.7/threading.py", line 926, in _bootstrap_inner
+    self.run()
+  File "/root/miniconda3/lib/python3.7/threading.py", line 870, in run
+    self._target(*self._args, **self._kwargs)
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/utils/data/_utils/pin_memory.py", line 25, in _pin_memory_loop
+    r = in_queue.get(timeout=MP_STATUS_CHECK_INTERVAL)
+  File "/root/miniconda3/lib/python3.7/multiprocessing/queues.py", line 113, in get
+    return _ForkingPickler.loads(res)
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/multiprocessing/reductions.py", line 294, in rebuild_storage_fd
+    fd = df.detach()
+  File "/root/miniconda3/lib/python3.7/multiprocessing/resource_sharer.py", line 57, in detach
+    with _resource_sharer.get_connection(self._id) as conn:
+  File "/root/miniconda3/lib/python3.7/multiprocessing/resource_sharer.py", line 87, in get_connection
+    c = Client(address, authkey=process.current_process().authkey)
+  File "/root/miniconda3/lib/python3.7/multiprocessing/connection.py", line 498, in Client
+    answer_challenge(c, authkey)
+  File "/root/miniconda3/lib/python3.7/multiprocessing/connection.py", line 741, in answer_challenge
+    message = connection.recv_bytes(256)         # reject large message
+  File "/root/miniconda3/lib/python3.7/multiprocessing/connection.py", line 216, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/root/miniconda3/lib/python3.7/multiprocessing/connection.py", line 407, in _recv_bytes
+    buf = self._recv(4)
+  File "/root/miniconda3/lib/python3.7/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+ConnectionResetError: [Errno 104] Connection reset by peer
+
+ERROR:root:Internal Python error in the inspect module.
+Below is the traceback from this internal error.
+
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.7/site-packages/IPython/core/interactiveshell.py", line 3326, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File "<ipython-input-16-3ea49add0339>", line 1, in <module>
+    learn.fit_one_cycle(1, 1e-2)
+  File "/root/miniconda3/lib/python3.7/site-packages/fastai/train.py", line 23, in fit_one_cycle
+    learn.fit(cyc_len, max_lr, wd=wd, callbacks=callbacks)
+  File "/root/miniconda3/lib/python3.7/site-packages/fastai/basic_train.py", line 200, in fit
+    fit(epochs, self, metrics=self.metrics, callbacks=self.callbacks+callbacks)
+  File "/root/miniconda3/lib/python3.7/site-packages/fastai/basic_train.py", line 99, in fit
+    for xb,yb in progress_bar(learn.data.train_dl, parent=pbar):
+  File "/root/miniconda3/lib/python3.7/site-packages/fastprogress/fastprogress.py", line 47, in __iter__
+    raise e
+  File "/root/miniconda3/lib/python3.7/site-packages/fastprogress/fastprogress.py", line 41, in __iter__
+    for i,o in enumerate(self.gen):
+  File "/root/miniconda3/lib/python3.7/site-packages/fastai/basic_data.py", line 75, in __iter__
+    for b in self.dl: yield self.proc_batch(b)
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 804, in __next__
+    idx, data = self._get_data()
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 766, in _get_data
+    raise RuntimeError('Pin memory thread exited unexpectedly')
+RuntimeError: Pin memory thread exited unexpectedly
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.7/site-packages/IPython/core/interactiveshell.py", line 2040, in showtraceback
+    stb = value._render_traceback_()
+AttributeError: 'RuntimeError' object has no attribute '_render_traceback_'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.7/site-packages/IPython/core/ultratb.py", line 1101, in get_records
+    return _fixed_getinnerframes(etb, number_of_lines_of_context, tb_offset)
+  File "/root/miniconda3/lib/python3.7/site-packages/IPython/core/ultratb.py", line 319, in wrapped
+    return f(*args, **kwargs)
+  File "/root/miniconda3/lib/python3.7/site-packages/IPython/core/ultratb.py", line 353, in _fixed_getinnerframes
+    records = fix_frame_records_filenames(inspect.getinnerframes(etb, context))
+  File "/root/miniconda3/lib/python3.7/inspect.py", line 1502, in getinnerframes
+    frameinfo = (tb.tb_frame,) + getframeinfo(tb, context)
+  File "/root/miniconda3/lib/python3.7/inspect.py", line 1460, in getframeinfo
+    filename = getsourcefile(frame) or getfile(frame)
+  File "/root/miniconda3/lib/python3.7/inspect.py", line 696, in getsourcefile
+    if getattr(getmodule(object, filename), '__loader__', None) is not None:
+  File "/root/miniconda3/lib/python3.7/inspect.py", line 732, in getmodule
+    for modname, module in list(sys.modules.items()):
+  File "/root/miniconda3/lib/python3.7/site-packages/torch/utils/data/_utils/signal_handling.py", line 66, in handler
+    _error_if_any_worker_fails()
+RuntimeError: DataLoader worker (pid 3775) is killed by signal: Bus error. It is possible that dataloader's workers are out of shared memory. Please try to raise your shared memory limit.
+
+
+

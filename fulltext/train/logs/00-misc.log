@@ -1,0 +1,20 @@
+Misc error messages
+
+
+--------------------
+
+RuntimeError: cuDNN error: CUDNN_STATUS_EXECUTION_FAILED
+
+RuntimeError: CUDA out of memory. Tried to allocate 382.00 MiB 
+  (GPU 0; 14.76 GiB total capacity; 
+          11.24 GiB already allocated; 
+         138.75 MiB free; 
+          11.44 GiB reserved in total by PyTorch)
+
+Trying to pickle-load a different fastai version:
+torch 1.9.0
+  AttributeError: 'LSTM' object has no attribute '_flat_weights_names'
+
+file core
+core: ELF 64-bit LSB core file x86-64, version 1 (SYSV), SVR4-style, from '/root/miniconda3/bin/python -m ipykernel_launcher -f /root/.local/share/jupyter', real uid: 0, effective uid: 0, real gid: 0, effective gid: 0, execfn: '/root/miniconda3/bin/python', platform: 'x86_64'
+
