@@ -1,0 +1,118 @@
+
+
+I get these stack traces on trying to save the data classes:
+  data_clas.save("data_clas_m14.pkl")
+  data_clas.save("data_clas_m15.pkl")
+
+  type(data_clas)
+    <class 'fastai.text.data.TextClasDataBunch'>
+
+I can't continue, seeing the same error after:
+ learn.fit_one_cycle(1, slice(5e-3/2., 5e-3))
+
+
+I get different errors.
+m14 has 85gb free
+m15 has  3gb free
+
+
+
+Model 15:
+
+data_clas.save("data_clas_m15.pkl")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_data.py", line 155, in save    try_save(self.label_list, self.path, file)
+  File "/opt/conda/lib/python3.7/site-packages/fastai/torch_core.py", line 416, in try_sav
+e
+    torch.save(state, target)
+  File "/opt/conda/lib/python3.7/site-packages/torch/serialization.py", line 379, in save    _save(obj, opened_zipfile, pickle_module, pickle_protocol)
+  File "/opt/conda/lib/python3.7/site-packages/torch/serialization.py", line 484, in _save
+    pickler.dump(obj)
+MemoryError
+
+
+
+Model 14:
+
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_data.py", line
+155, in save
+    try_save(self.label_list, self.path, file)
+  File "/opt/conda/lib/python3.7/site-packages/fastai/torch_core.py", line
+py", line 918, in __init__
+    w.start()
+  File "/opt/conda/lib/python3.7/multiprocessing/process.py", line 112, in
+start
+    self._popen = self._Popen(self)
+  File "/opt/conda/lib/python3.7/multiprocessing/context.py", line 223, in
+py", line 359, in __iter__
+    return _MultiProcessingDataLoaderIter(self)
+  File "/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.
+    w.start()
+  File "/opt/conda/lib/python3.7/multiprocessing/process.py", line 112, in sta
+rt
+    self._popen = self._Popen(self)
+  File "/opt/conda/lib/python3.7/multiprocessing/context.py", line 223, iy", line 918, in __init__
+    w.start()
+  File "/opt/conda/lib/python3.7/multiprocessing/process.py", line 112, i
+n start                                                                r.py", line 918, in __init__
+    w.start()                                                            File "/opt/conda/lib/python3.7/multiprocessing/process.py", line 112,
+der.py", line 918, in __init__
+    w.start()                                                            File "/opt/conda/lib/python3.7/multiprocessing/process.py", line 112, in start
+    self._popen = self._Popen(self)
+  File "/opt/conda/lib/python3.7/multiprocessing/context.py", line     waerr.py", line 918, in __init__
+    w.start()                                                                File "/opt/conda/lib/python3.7/multiprocessing/process.py", line 112, in start
+    for b in self.dl: yield self.proc_batch(b)
+    w.start()
+  File "/opt/conda/lib/python3.7/multiprocessing/process.py", line 112, in
+start
+  File "/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.
+py", line 918, in __init__
+    w.start()
+  File "/opt/conda/lib/python3.7/multiprocessing/process.py", line 112, in
+start
+    self._popen = self._Popen(self)
+  File "/opt/conda/lib/python3.7/multiprocessing/context.py", line 223, in
+_Popen
+    return _default_context.get_context().Process._Popen(process_obj)
+  File "/opt/conda/lib/python3.7/multiprocessing/context.py", line 277, in
+  File "<stdin>", line 1, in <module>
+  File "/opt/conda/lib/python3.7/site-packages/fastai/train.py", line 23, in fit_one_cycle
+    learn.fit(cyc_len, max_lr, wd=wd, callbacks=callbacks)
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py", line 200, in fit
+    fit(epochs, self, metrics=self.metrics, callbacks=self.callbacks+callbacks)
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py", line 99, in fit
+    for xb,yb in progress_bar(learn.data.train_dl, parent=pbar):
+  File "/opt/conda/lib/python3.7/site-packages/fastprogress/fastprogress.py", line 47, in __
+iter__
+    raise e
+  File "/opt/conda/lib/python3.7/site-packages/fastprogress/fastprogress.py", line 41, in __
+iter__
+    for i,o in enumerate(self.gen):
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_data.py", line 75, in __iter__
+    for b in self.dl: yield self.proc_batch(b)
+  File "/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 359, in
+ __iter__
+    return self._get_iterator()
+  File "/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 305, in
+ _get_iterator
+    return _MultiProcessingDataLoaderIter(self)
+  File "/opt/conda/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 918, in
+ __init__
+    w.start()
+  File "/opt/conda/lib/python3.7/multiprocessing/process.py", line 112, in start
+    self._popen = self._Popen(self)
+  File "/opt/conda/lib/python3.7/multiprocessing/context.py", line 223, in _Popen
+    return _default_context.get_context().Process._Popen(process_obj)
+  File "/opt/conda/lib/python3.7/multiprocessing/context.py", line 277, in _Popen
+    return Popen(process_obj)
+  File "/opt/conda/lib/python3.7/multiprocessing/popen_fork.py", line 20, in __init__
+    self._launch(process_obj)
+  File "/opt/conda/lib/python3.7/multiprocessing/popen_fork.py", line 70, in _launch
+    self.pid = os.fork()
+
+
+
+

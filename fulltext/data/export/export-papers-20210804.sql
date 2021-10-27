@@ -1,4 +1,4 @@
-# File: export-papers.sql
+# File: export-papers-20210804.sql
 # Desc: Get metadata from the arXiv database.
 #       The paper version is needed to lookup the text files that usually exist in /data/txt.
 # Use:  mysql --defaults-extra-file=~/.my.db-rep.ro.cnf -BC arXiv < export-papers.sql > export-papers-sample.tsv
@@ -28,8 +28,9 @@ select m.paper_id,
   left join arXiv_demographics d on d.user_id = m.submitter_id
  where m.is_withdrawn = 0
    and m.is_current   = 1
+   and
  order by 3,1
- limit 500
+ limit 20
 ;
 
 

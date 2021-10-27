@@ -1,0 +1,82 @@
+In arxiv-development
+  Success creating models 8 and 9
+  Fail on memory issues creating models 10 and 14
+
+VM Details:
+  pytorch-1-9-20210816-113325
+  us-central1-b		—	PyTorch:1.9	Accelerator Optimized: 1 NVIDIA Tesla A100 GPU, 12 vCPUs, 85GB RAM 	NVIDIA TESLA A100 x 1
+  Service account	Aug 16, 2021, 11:36:41 AM
+
+VM Changes:
+  Just did a pip install for fastai .61 and sentencepiece.
+
+Here's the cell causing a memory error:
+  tmp=f'data/{dataset_name}/{dataset_name}-train.json'
+  train_df = pd.read_json(tmp)
+  train_tl = TextList.from_df(train_df, Path('.'), cols=["text"], processor=processor)
+
+Tried both:
+  use_num_cpus  = 11  # m10-ds8-mixed-large.ipynb
+  use_num_cpus  = 1   # m14-ds8-mixed-large.ipynb
+
+
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+/tmp/ipykernel_6069/2555815429.py in <module>
+      1 tmp=f'data/{dataset_name}/{dataset_name}-train.json'
+----> 2 train_df = pd.read_json(tmp)
+      3 train_tl = TextList.from_df(train_df, Path('.'), cols=["text"], processor=processor)
+
+/opt/conda/lib/python3.7/site-packages/pandas/util/_decorators.py in wrapper(*args, **kwargs)
+    205                 else:
+    206                     kwargs[new_arg_name] = new_arg_value
+--> 207             return func(*args, **kwargs)
+    208 
+    209         return cast(F, wrapper)
+
+/opt/conda/lib/python3.7/site-packages/pandas/util/_decorators.py in wrapper(*args, **kwargs)
+    309                     stacklevel=stacklevel,
+    310                 )
+--> 311             return func(*args, **kwargs)
+    312 
+    313         return wrapper
+
+/opt/conda/lib/python3.7/site-packages/pandas/io/json/_json.py in read_json(path_or_buf, orient, typ, dtype, convert_axes, convert_dates, keep_default_dates, numpy, precise_float, date_unit, encoding, encoding_errors, lines, chunksize, compression, nrows, storage_options)
+    612 
+    613     with json_reader:
+--> 614         return json_reader.read()
+    615 
+    616 
+
+/opt/conda/lib/python3.7/site-packages/pandas/io/json/_json.py in read(self)
+    746                 obj = self._get_object_parser(self._combine_lines(data_lines))
+    747         else:
+--> 748             obj = self._get_object_parser(self.data)
+    749         self.close()
+    750         return obj
+
+/opt/conda/lib/python3.7/site-packages/pandas/io/json/_json.py in _get_object_parser(self, json)
+    768         obj = None
+    769         if typ == "frame":
+--> 770             obj = FrameParser(json, **kwargs).parse()
+    771 
+    772         if typ == "series" or obj is None:
+
+/opt/conda/lib/python3.7/site-packages/pandas/io/json/_json.py in parse(self)
+    883 
+    884         else:
+--> 885             self._parse_no_numpy()
+    886 
+    887         if self.obj is None:
+
+/opt/conda/lib/python3.7/site-packages/pandas/io/json/_json.py in _parse_no_numpy(self)
+   1138         if orient == "columns":
+   1139             self.obj = DataFrame(
+-> 1140                 loads(json, precise_float=self.precise_float), dtype=None
+   1141             )
+   1142         elif orient == "split":
+
+ValueError: Could not reserve memory block
+
+
+

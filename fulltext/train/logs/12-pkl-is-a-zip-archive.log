@@ -1,0 +1,124 @@
+Need to figure out learner methods: save vs export
+
+----------------------
+
+Compare the pickle's models.
+  One is a zip.
+
+(arxiv-classifier) ➜  models git:(ARXIVNG-4279-train-fulltext) ✗ od -c  m3-ds2-toy.pkl | head
+0000000  200 002 212  \n   l 374 234   F 371       j 250   P 031   . 200
+0000020  002   M 351 003   . 200 002   }   q  \0   (   X 020  \0  \0  \0
+0000040    p   r   o   t   o   c   o   l   _   v   e   r   s   i   o   n
+0000060    q 001   M 351 003   X  \r  \0  \0  \0   l   i   t   t   l   e
+0000100    _   e   n   d   i   a   n   q 002 210   X  \n  \0  \0  \0   t
+0000120    y   p   e   _   s   i   z   e   s   q 003   }   q 004   (   X
+0000140  005  \0  \0  \0   s   h   o   r   t   q 005   K 002   X 003  \0
+0000160   \0  \0   i   n   t   q 006   K 004   X 004  \0  \0  \0   l   o
+0000200    n   g   q  \a   K 004   u   u   . 200 002   }   q  \0   (   X
+0000220   \b  \0  \0  \0   o   p   t   _   f   u   n   c   q 001   c   f
+(arxiv-classifier) ➜  models git:(ARXIVNG-4279-train-fulltext) ✗ od -c m12-ds11-mixed-large.pkl| head
+0000000    P   K 003 004  \0  \0  \b  \b  \0  \0  \0  \0  \0  \0  \0  \0
+0000020   \0  \0  \0  \0  \0  \0  \0  \0  \0  \0 020  \0 022  \0   a   r
+0000040    c   h   i   v   e   /   d   a   t   a   .   p   k   l   F   B
+0000060  016  \0   Z   Z   Z   Z   Z   Z   Z   Z   Z   Z   Z   Z   Z   Z
+0000100  200 002   }   q  \0   (   X  \b  \0  \0  \0   o   p   t   _   f
+0000120    u   n   c   q 001   c   f   u   n   c   t   o   o   l   s  \n
+0000140    p   a   r   t   i   a   l  \n   q 002   c   t   o   r   c   h
+0000160    .   o   p   t   i   m   .   a   d   a   m  \n   A   d   a   m
+0000200   \n   q 003 205   q 004   R   q 005   (   h 003   )   }   q 006
+0000220    X 005  \0  \0  \0   b   e   t   a   s   q  \a   G   ? 354 314
+
+
+----------------------
+
+Stack trace running arxiv-classifier with model 8:
+
+FLASK_APP=classifier.test_app flask run --port 9999
+ * Serving Flask app "classifier.test_app"
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+Traceback (most recent call last):
+  File "/Users/bgm37/.pyenv/versions/3.6.10/lib/python3.6/tarfile.py", line 2297, in next
+    tarinfo = self.tarinfo.fromtarfile(self)
+  File "/Users/bgm37/.pyenv/versions/3.6.10/lib/python3.6/tarfile.py", line 1093, in fromtarfile
+    obj = cls.frombuf(buf, tarfile.encoding, tarfile.errors)
+  File "/Users/bgm37/.pyenv/versions/3.6.10/lib/python3.6/tarfile.py", line 1037, in frombuf
+    raise InvalidHeaderError("bad checksum")
+tarfile.InvalidHeaderError: bad checksum
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/torch/serialization.py", line 595, in _load
+    return legacy_load(f)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/torch/serialization.py", line 506, in legacy_load
+    with closing(tarfile.open(fileobj=f, mode='r:', format=tarfile.PAX_FORMAT)) as tar, \
+  File "/Users/bgm37/.pyenv/versions/3.6.10/lib/python3.6/tarfile.py", line 1589, in open
+    return func(name, filemode, fileobj, **kwargs)
+  File "/Users/bgm37/.pyenv/versions/3.6.10/lib/python3.6/tarfile.py", line 1619, in taropen
+    return cls(name, mode, fileobj, **kwargs)
+  File "/Users/bgm37/.pyenv/versions/3.6.10/lib/python3.6/tarfile.py", line 1482, in __init__
+    self.firstmember = self.next()
+  File "/Users/bgm37/.pyenv/versions/3.6.10/lib/python3.6/tarfile.py", line 2309, in next
+    raise ReadError(str(e))
+tarfile.ReadError: bad checksum
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/bgm37/venvs/arxiv-classifier/bin/flask", line 8, in <module>
+    sys.exit(main())
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/flask/cli.py", line 967, in main
+    cli.main(args=sys.argv[1:], prog_name="python -m flask" if as_module else None)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/flask/cli.py", line 586, in main
+    return super(FlaskGroup, self).main(*args, **kwargs)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/click/core.py", line 782, in main
+    rv = self.invoke(ctx)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/click/core.py", line 1259, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/click/core.py", line 1066, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/click/core.py", line 610, in invoke
+    return callback(*args, **kwargs)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/click/decorators.py", line 73, in new_func
+    return ctx.invoke(f, obj, *args, **kwargs)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/click/core.py", line 610, in invoke
+    return callback(*args, **kwargs)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/flask/cli.py", line 848, in run_command
+    app = DispatchingApp(info.load_app, use_eager_loading=eager_loading)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/flask/cli.py", line 305, in __init__
+    self._load_unlocked()
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/flask/cli.py", line 330, in _load_unlocked
+    self._app = rv = self.loader()
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/flask/cli.py", line 388, in load_app
+    app = locate_app(self, import_name, name)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/flask/cli.py", line 257, in locate_app
+    return find_best_app(script_info, module)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/flask/cli.py", line 83, in find_best_app
+    app = call_factory(script_info, app_factory)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/flask/cli.py", line 119, in call_factory
+    return app_factory()
+  File "/Users/bgm37/Documents/arxiv/src/arxiv-classifier/classifier/test_app.py", line 22, in create_app
+    get_classifier()
+  File "/Users/bgm37/Documents/arxiv/src/arxiv-classifier/classifier/services/classifier/__init__.py", line 41, in get_classifier
+    g.classifier = create_classifier()
+  File "/Users/bgm37/Documents/arxiv/src/arxiv-classifier/classifier/services/classifier/__init__.py", line 27, in create_classifier
+    return ULMFiTClassifier(model_path)
+  File "/Users/bgm37/Documents/arxiv/src/arxiv-classifier/classifier/classifiers/ulmfit/ulmfit.py", line 32, in __init__
+    self._load_model()
+  File "/Users/bgm37/Documents/arxiv/src/arxiv-classifier/classifier/classifiers/ulmfit/ulmfit.py", line 42, in _load_model
+    self.learner = load_learner(model_path, model_file)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/fastai/basic_train.py", line 621, in load_learner
+    state = torch.load(source, map_location='cpu') if defaults.device == torch.device('cpu') else torch.load(source)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/torch/serialization.py", line 426, in load
+    return _load(f, map_location, pickle_module, **pickle_load_args)
+  File "/Users/bgm37/venvs/arxiv-classifier/lib/python3.6/site-packages/torch/serialization.py", line 599, in _load
+    raise RuntimeError("{} is a zip archive (did you mean to use torch.jit.load()?)".format(f.name))
+RuntimeError: models/m8-ds6-mixed-tiny.pkl is a zip archive (did you mean to use torch.jit.load()?)
+
+
+
+
+

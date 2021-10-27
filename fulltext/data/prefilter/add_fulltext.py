@@ -9,11 +9,10 @@ import re
 from os import path
 
 #MAX_CHAR      = 30000 # ds6
-MAX_CHAR       = 40000 # ds7,8,10,11
+MAX_CHAR       = 40000 # ds7,8,10,11,12
 #MAX_CHAR      = 50000 # ds5,9
 #MAX_CHAR      = 70000
 
-#DATASET_TYPES = ['debug']
 #DATASET_NAME = 'ds0'
 #DATASET_NAME = 'ds2-fulltext-toy'
 #DATASET_NAME = 'ds3-mixed-small'
@@ -24,9 +23,11 @@ MAX_CHAR       = 40000 # ds7,8,10,11
 #DATASET_NAME = 'ds8-mixed-large'
 #DATASET_NAME = 'ds9-mixed-all'
 #DATASET_NAME = 'ds10-mixed-large'
-DATASET_NAME = 'ds11-mixed-large'
-DATASET_DATE = '20210804'
-DATASET_TYPES = ['train', 'validate', 'test']
+#DATASET_NAME = 'ds11-mixed-large'
+DATASET_NAME = 'ds12-recent-papers'
+#DATASET_TYPES = ['train', 'validate', 'test']
+DATASET_TYPES = ['test']
+#DATASET_TYPES = ['debug']
 
 for dataset_type in DATASET_TYPES:
   read_file    = f'{DATASET_NAME}-{dataset_type}.tsv'
@@ -45,14 +46,15 @@ for dataset_type in DATASET_TYPES:
       #  break
 
       data = {
-        'paper_id'         : row[0],
-        'version'          : row[1],
-        'yymm'             : row[2],
-        'primary_category' : row[3],
-        'title'            : row[4],
+        'document_id'      : row[0],
+        'paper_id'         : row[1],
+        'version'          : row[2],
+        'yymm'             : row[3],
+        'primary_category' : row[4],
+        'title'            : row[5],
       }
-      title    = row[4]
-      abstract = row[5]
+      title    = row[5]
+      abstract = row[6]
       paper_id = data.get("paper_id")
       version  = data.get("version")
 

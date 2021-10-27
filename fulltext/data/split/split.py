@@ -4,6 +4,9 @@
 #       python3 split.py
 # Ref:
 # https://github.com/arXiv/arxiv-base/blob/develop/arxiv/taxonomy/definitions.py
+#
+# Dragons: It's quirky and doesn't write the last yymm. 
+#   Just dup the last readfile line and increment its yymm.
 
 import csv
 import random
@@ -46,7 +49,7 @@ CATEGORIES   = ACTIVE_CATEGORIES
 READ_FILE    = 'papers-20210804.tsv'
 YYMM_FILTER  = None
 
-dataset = 11
+dataset = 12
 if dataset == 2:
   CATEGORIES                = TOY_CATEGORIES
   DATASET_NAME              = 'ds2-fulltext-toy'
@@ -65,11 +68,11 @@ elif dataset == 3:
   TRAIN_PAPERS_PER_MONTH    = 4
   VALIDATE_PAPERS_PER_MONTH = 1
 
-                                       # ds4 and 5 is approximately where:
-                                       #   split became a single loop
+                                       # ds4 and ds5 is approximately where:
+                                       #   split.py recoded as a single loop
                                        #   category aliases were dropped
-                                       #   truncate large full text files
-                                       #   drop header and references
+                                       #   large full text files are truncated
+                                       #   header and reference text are removed 
 elif dataset == 4:
   DATASET_NAME              = 'ds4-mixed-small'
   TEST_PAPERS_PER_MONTH     = 3
@@ -104,6 +107,9 @@ elif dataset == 9:
   DATASET_NAME              = 'ds9-mixed-all'
   TEST_PAPERS_PER_MONTH     = 5
   TRAIN_PAPERS_PER_MONTH    = 1000
+                                       # 20% validation is suggested for small datasets
+                                       #   this is larger so maybe ok, 
+                                       #     also some category-month counts are small
   VALIDATE_PAPERS_PER_MONTH = 10
 
 elif dataset == 10:
@@ -117,6 +123,14 @@ elif dataset == 11:
   TEST_PAPERS_PER_MONTH     = 5
   TRAIN_PAPERS_PER_MONTH    = 25
   VALIDATE_PAPERS_PER_MONTH = 5
+
+elif dataset == 12:
+  DATASET_NAME              = 'ds12-recent-papers'
+  TEST_PAPERS_PER_MONTH     = 2000
+  TRAIN_PAPERS_PER_MONTH    = 0
+  VALIDATE_PAPERS_PER_MONTH = 0
+  READ_FILE                 = 'papers-1937098-1964332.tsv'
+
 
 
                                        # awk '{print $1}' papers-20210804.tsv  | sort -u | wc -l
@@ -146,17 +160,18 @@ with open(read_file) as rf:
     #if i > 23700:
     #  break
 
-    if len(row) != 14:
-      #print(f'BUG: 14 rows != {len(row)} rows')
+    if len(row) != 15:
+      print(f'BUG: 15 rows != {len(row)} rows')
       continue
 
     else: 
-      paper_id       = row[0]
-      version        = row[1]
-      yymm           = row[2]
-      abs_categories = row[4]
-      title          = row[12]
-      abstract       = row[13]
+      document_id    = row[0]
+      paper_id       = row[1]
+      version        = row[2]
+      yymm           = row[3]
+      abs_categories = row[5]
+      title          = row[13]
+      abstract       = row[14]
 
       if YYMM_FILTER and yymm not in YYMM_FILTER:
         continue
@@ -167,8 +182,9 @@ with open(read_file) as rf:
           abs_categories.replace(k,v)
         primary_category = abs_categories.split()[0]
 
-                                       # only papers classified with current subject-categories are useful.
+                                       # Ignore deprecated subject-categories.
       if primary_category not in CATEGORIES:
+        print(f'Ignore cat: { primary_category }.')
         continue
 
                                        # Read the next row of the sorted tsv.
@@ -176,7 +192,7 @@ with open(read_file) as rf:
                                        # then print the number of random papers
                                        #   from each category requested.
       if yymm != previous_yymm:
-        #print(f'Read papers from yymm: { previous_yymm }. Saving, then will read from yymm: {yymm}.')
+        print(f'Read papers from yymm: { previous_yymm }. Saving, then will read from yymm: {yymm}.')
 
         for k in yymm_papers.keys():
           papers_by_category = yymm_papers.get(k)
@@ -184,6 +200,8 @@ with open(read_file) as rf:
                                        # NEW CODE:
 
             size = len(papers_by_category)
+            print(f'cat: {k}. len(papers_by_category): { len(papers_by_category) }. yymm: {yymm}.')
+
             left = [
                    TRAIN_PAPERS_PER_MONTH,
                    VALIDATE_PAPERS_PER_MONTH,
@@ -195,7 +213,12 @@ with open(read_file) as rf:
 
             starting_index = random.randint(0,size-1)
             whos_up = ITRAIN
-            write_here = wt
+            if left[whos_up] <= 0:
+              whos_up = (whos_up+1) % 3
+            if left[whos_up] <= 0:
+              whos_up = (whos_up+1) % 3
+
+            write_here = None
             i = 0
             while i < size and sum(left) > 0:
               #print(f'  Category:{k}: size:{size}, i:{i}, left:{left}, whos_up:(whos_up)')
@@ -220,7 +243,7 @@ with open(read_file) as rf:
               if left[whos_up] <= 0:
                 whos_up = (whos_up+1) % 3
 
-              i              += 1      # How many items have we looked at?
+              i += 1                   # How many items have we looked at?
                                        # Where are we in the the list?
               starting_index = (starting_index+1)%size      
 
@@ -228,15 +251,15 @@ with open(read_file) as rf:
         #print(f'yymm: { yymm }. sum: { sum([ len(x) for x in yymm_papers.values() ]) }.')
         yymm_papers.clear()
 
-                                       # store paper by: yymm and subcategory
+                                       # Store paper by: yymm and subcategory
       papers_by_category = yymm_papers.get(primary_category)
       if not papers_by_category:
         papers_by_category = []
         yymm_papers[primary_category] = papers_by_category
-      paper_to_add = [paper_id, version, yymm, primary_category, title, abstract]
+      paper_to_add = [document_id, paper_id, version, yymm, primary_category, title, abstract]
       papers_by_category.append(paper_to_add)
 
-                                       # to track when year-month changes
+                                       # To track when the year-month changes
                                        #   in the sorted input file
       previous_yymm = yymm
 

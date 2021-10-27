@@ -1,0 +1,122 @@
+
+Using 1 gpu, to build model 14
+
+jupyter@pytorch-1-9-20210820-m12:~$ date
+  Fri Oct  8 15:00:17 UTC 2021
+
+It looked stable at around 2G free ram.
+Maybe errors are more likely when there is memory pressure
+
+I think this is epoch #2
+
+ls -al models/
+total 846560
+drwxr-xr-x  2 jupyter jupyter      4096 Oct  4 17:25 .
+drwxr-xr-x 16 jupyter jupyter      4096 Oct  5 03:08 ..
+-rw-r--r--  1 jupyter jupyter  87063032 Aug  5 18:30 abstract-lm.pth
+-rw-r--r--  1 jupyter jupyter    762266 Aug  5 18:30 abstract-spm.model
+-rw-r--r--  1 jupyter jupyter    550939 Aug  5 18:30 abstract-spm.vocab
+-rw-r--r--  1 jupyter jupyter 388154070 Sep  8 20:14 m12-ds11-mixed-large-save.pkl.pth
+-rw-r--r--  1 jupyter jupyter 130179650 Sep  3 19:05 m12-ds11-mixed-large.pkl
+-rw-r--r--  1 jupyter jupyter 130179586 Oct  4 17:25 m14-ds8-mixed-large-export1.pkl
+-rw-r--r--  1 jupyter jupyter 129959844 Oct  4 17:23 m14-ds8-mixed-large-save1.pkl.pth
+
+RuntimeError: CUDA error: an illegal memory access was encountered
+CUDA kernel errors might be asynchronously reported at some other API call,so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+
+------------------------------ full log:
+
+
+Epoch 1/1 : |████████████████████████████████████-| 99.87% [32070/32111 45:47:23<03:30
+Epoch 1/1 : |████████████████████████████████████-| 99.88% [32071/32111 45:47:28<03:25
+2.0233]
+Epoch 1/1 : |████████████████████████████████████-| 99.88% [32072/32111 45:47:34<03:20 Epoch 1/1 : |████████████████████████████████████-| 99.88% [32073/32111 45:47:45<03:15
+Epoch 1/1 : |████████████████████████████████████-| 99.88% [32074/32111 45:47:54<03:10
+Epoch 1/1 : |████████████████████████████████████-| 99.89% [32075/32111 45:47:58<03:05 Epoch 1/1 : |████████████████████████████████████-| 99.89% [32076/32111 45:48:01<02:59
+Epoch 1/1 : |████████████████████████████████████-| 99.89% [32077/32111 45:48:07<02:54
+Epoch 1/1 : |████████████████████████████████████-| 99.90% [32078/32111 45:48:14<02:49
+Epoch 1/1 : |████████████████████████████████████-| 99.90% [32079/32111 45:48:21<02:44 Epoch 1/1 : |████████████████████████████████████-| 99.90% [32080/32111 45:48:26<02:39                                                     2.0169]                                                                                                     Epoch 1/1 : |████████████████████████████████████-| 99.91% [32081/32111 45:48:32<02:34
+Epoch 1/1 : |████████████████████████████████████-| 99.91% [32082/32111 45:48:37<02:29                           Epoch 1/1 : |████████████████████████████████████-| 99.91% [32083/32111 45:48:40<02:23                           Epoch 1/1 : |████████████████████████████████████-| 99.92% [32084/32111 45:48:44<02:18                           Epoch 1/1 : |████████████████████████████████████-| 99.92% [32085/32111 45:48:48<02:13
+Epoch 1/1 : |████████████████████████████████████-| 99.92% [32086/32111 45:48:54<02:08                           Epoch 1/1 : |████████████████████████████████████-| 99.93% [32087/32111 45:49:01<02:03
+Epoch 1/1 : |████████████████████████████████████-| 99.93% [32088/32111 45:49:07<01:58                           Epoch 1/1 : |████████████████████████████████████-| 99.93% [32089/32111 45:49:14<01:53
+Epoch 1/1 : |████████████████████████████████████-| 99.93% [32090/32111 45:49:21<01:47
+Epoch 1/1 : |████████████████████████████████████-| 99.94% [32091/32111 45:49:25<01:42                           Epoch 1/1 : |████████████████████████████████████-| 99.94% [32092/32111 45:49:29<01:37                           Epoch 1/1 : |████████████████████████████████████-| 99.94% [32093/32111 45:49:31<01:32                           1.9861]
+Epoch 1/1 : |████████████████████████████████████-| 99.95% [32094/32111 45:49:36<01:27
+Epoch 1/1 : |████████████████████████████████████-| 99.95% [32095/32111 45:49:42<01:22
+Epoch 1/1 : |████████████████████████████████████-| 99.95% [32096/32111 45:49:45<01:17
+Epoch 1/1 : |████████████████████████████████████-| 99.96% [32097/32111 45:49:47<01:11
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pth
+readpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pth
+readpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pth
+readpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pth
+readpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pth
+readpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pth
+readpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pth
+readpool)
+
+Epoch 1/1 : |-------------------------------------| 0.13% [5/3962 01:24<18:28:38]Oct-21
+Epoch 1/1 : |-------------------------------------| 0.28% [11/3962 02:20<14:03:27]ct-21
+Epoch 1/1 : |-------------------------------------| 0.45% [18/3962 03:24<12:27:29]ct-21
+[ ... ]
+Epoch 1/1 : |█████████████████████████------------| 68.65% [2720/3962 3:50:16<1:45:08]1
+Epoch 1/1 : |█████████████████████████------------| 69.28% [2745/3962 3:51:16<1:42:32]1
+Epoch 1/1 : |█████████████████████████------------| 69.91% [2770/3962 3:52:15<1:39:56]1
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py", line 200, in fit
+    fit(epochs, self, metrics=self.metrics, callbacks=self.callbacks+callbacks)
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py", line 106, in fit
+    cb_handler=cb_handler, pbar=pbar)
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py", line 59, in vali
+date
+    val_loss = loss_batch(model, xb, yb, loss_func, cb_handler=cb_handler)
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py", line 38, in loss
+_batch
+    return loss.detach().cpu()
+RuntimeError: CUDA error: an illegal memory access was encountered
+CUDA kernel errors might be asynchronously reported at some other API call,so the stack
+trace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+>>>
+[0] 0:python*                                   "pytorch-1-9-20210820-" 01:26 08-Oct-21
+[0] 0:python*                                   "pytorch-1-9-20210820-" 01:27 08-Oct-21
+[0] 0:python*                                   "pytorch-1-9-20210820-" 01:28 08-Oct-21
+[ ... ] 
+[0] 0:python*                                   "pytorch-1-9-20210820-" 13:10 08-Oct-21
+[0] 0:python*                                   "pytorch-1-9-20210820-" 13:11 08-Oct-21
+[0] 0:python*                                   "pytorch-1-9-20210820-" 13:12 08-Oct-21
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+[W pthreadpool-cpp.cc:90] Warning: Leaking Caffe2 thread-pool after fork. (function pthreadpool)
+Traceback (most recent call last):███████████████-| 99.97% [3961/3962 4:06:16<00:03]0]
+  File "m14-ds8-mixed-large.py", line 89, in <module>
+    learn.fit_one_cycle(1, slice(5e-3/2., 5e-3))
+  File "/opt/conda/lib/python3.7/site-packages/fastai/train.py", line 23, in fit_one_cycle
+    learn.fit(cyc_len, max_lr, wd=wd, callbacks=callbacks)
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py", line 200, in fit
+    fit(epochs, self, metrics=self.metrics, callbacks=self.callbacks+callbacks)
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py", line 106, in fit
+    cb_handler=cb_handler, pbar=pbar)
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py", line 59, in validate
+    val_loss = loss_batch(model, xb, yb, loss_func, cb_handler=cb_handler)
+  File "/opt/conda/lib/python3.7/site-packages/fastai/basic_train.py", line 38, in loss_batch
+    return loss.detach().cpu()
+RuntimeError: CUDA error: an illegal memory access was encountered
+CUDA kernel errors might be asynchronously reported at some other API call,so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+>>>
+
