@@ -29,37 +29,40 @@ import jsonlines
 import sys
 import stream_json
 
-GOOGLE_VERTEX_FORMAT=False
+GOOGLE_VERTEX_FORMAT = False
 
-if len(sys.argv) not in (3,4):
-  print("Usage: python to_jsonl.py readfile writefile [usage]")
-  print("   eg: python to_jsonl.py ds9-mixed-all-validate.json ds9-mixed-all-validate.jsonl validation")
+if len(sys.argv) not in (3, 4):
+    print("Usage: python to_jsonl.py readfile writefile [usage]")
+    print(
+        "   eg: python to_jsonl.py ds9-mixed-all-validate.json ds9-mixed-all-validate.jsonl validation"
+    )
 
 else:
-  readfile  = sys.argv[1]
-  writefile = sys.argv[2]
-  usage     = sys.argv[3] if len(sys.argv) == 4 else 'validation'
+    readfile = sys.argv[1]
+    writefile = sys.argv[2]
+    usage = sys.argv[3] if len(sys.argv) == 4 else "validation"
 
-  with jsonlines.open(writefile, mode='w') as wf:
-    with open(readfile) as rf:
-      sj = stream_json.StreamJson(rf)
-      for item in sj:
-        j  = json.loads(item)
+    with jsonlines.open(writefile, mode="w") as wf:
+        with open(readfile) as rf:
+            sj = stream_json.StreamJson(rf)
+            for item in sj:
+                j = json.loads(item)
 
-        if GOOGLE_VERTEX_FORMAT:
-          pc = j["primary_category"]
-          if type(j["text"]) == str:
-            ft = j["text"]
-          else:
-            ft = ','.join( j["text"] )
+                if GOOGLE_VERTEX_FORMAT:
+                    pc = j["primary_category"]
+                    if type(j["text"]) == str:
+                        ft = j["text"]
+                    else:
+                        ft = ",".join(j["text"])
 
-          data = {
-            "classificationAnnotation": { "displayName": pc },
-            "textContent": ft,
-            "dataItemResourceLabels": { "aiplatform.googleapis.com/ml_use": usage }
-          }
-          wf.write(data)
+                    data = {
+                        "classificationAnnotation": {"displayName": pc},
+                        "textContent": ft,
+                        "dataItemResourceLabels": {
+                            "aiplatform.googleapis.com/ml_use": usage
+                        },
+                    }
+                    wf.write(data)
 
-        else:
-          wf.write(j)
-
+                else:
+                    wf.write(j)
