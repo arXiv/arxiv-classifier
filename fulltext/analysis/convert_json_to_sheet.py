@@ -5,17 +5,11 @@
 
 import csv
 import json
-import numpy  as np
-import pandas as pd
-import re
-import requests
 import sys
-import time
 from datetime import timedelta,datetime
-from pathlib     import Path
 
-readfile  = 'partial.json'
-writefile = 'partial.csv'
+readfile  = 'm15-ds12-classified-inline_0.json'
+writefile = 'm15-ds12-classified-inline_0.csv'
 
 d1 = datetime.now()
 i = 0
