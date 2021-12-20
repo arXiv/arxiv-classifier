@@ -11,8 +11,6 @@
 import csv
 import random
 
-TAB = '\t'
-
                                        # Replace the first with the second category
 CATEGORY_ALIASES = {
     'math.MP': 'math-ph',
