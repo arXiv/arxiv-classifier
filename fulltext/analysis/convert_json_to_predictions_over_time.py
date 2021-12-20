@@ -4,7 +4,7 @@
 #       Normalize announce date to first day of month.
 #       Keep subject category.
 #       Compare announced category to highest rated prediction.
-#       http://t..
+#       https://tableau.cornell.edu/#/views/arXivClassifierM15/Sheet1
 
 '''
 Why we don't use it below a threshold:
