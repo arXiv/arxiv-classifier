@@ -21,10 +21,16 @@ from datetime import datetime
 import time
 
 
-def classify(writefile_base, index, mod):
+def classify(index, mod):
 
-  modelfile     = 'm12-ds11-mixed-large.pkl'
-  readfile      = 'ds12-recent-papers-test.json'
+  #modelfile     = 'm12-ds11-mixed-large.pkl'
+  modelfile     = 'm15-ds9-mixed-all-export8.pkl'
+
+  #readfile      = 'ds12-recent-papers-test.json'
+  readfile      = 'ds9-mixed-all-test.json'
+
+  #writefile_base = 'm15-ds12-classified-inline'
+  writefile_base = 'm15-ds9-classified-inline'
 
   learn = load_learner(path=Path('models'), file=Path(modelfile))  
 
@@ -72,8 +78,7 @@ if __name__ == '__main__':
   print(f'Starting { i }/{ thread_count }, at { datetime.now() } ')
   d1 = datetime.now()
 
-  wfb = 'm12-ds12-classified-inline'
-  classify(wfb,i,thread_count)
+  classify(i,thread_count)
 
   d2 = datetime.now()
   delta = d2 - d1
